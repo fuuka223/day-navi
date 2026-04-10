@@ -1,24 +1,73 @@
-# README
+# Day-Navi
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## 1. アプリケーション概要
+「環境情報と時間を掛け合わせた、次世代型スケジュール最適化アプリ」
 
-Things you may want to cover:
+Day-Naviは、カレンダー・タスク・外部環境（天気）を一つの場所で統合管理し、ユーザーの「判断コスト」を最小化することを目的としています。
+単なる予定管理にとどまらず、天候による移動時間の変動を自動計算し、「今、何をすべきか」という結論を提示することで、ユーザーが本当に集中したい活動に充てる「余白」を創出します。
 
-* Ruby version
+## 2. 開発背景・想い
+日々の生活において、タスク管理と天気などの環境要因を統合して考えることは、意外にも脳のリソースを消費します。
+プログラミング技術を用いてこの「判断の負荷」を下げ、新人社会人や学習者が自己研鑽の時間を最大化できるよう、本アプリケーションを開発いたしました。
 
-* System dependencies
+## 3. 想定ユーザー
+- **生活とキャリアの向上を目指す新人社会人**
+  - 複数のツールを見比べず、アプリから「次の行動」の結論を得たい。
+  - 逆算されたスケジュールにより、焦りではなく余裕を持って行動したい。
+  - 計画通りに過ごせた達成感を得て、モチベーションを維持したい。
 
-* Configuration
+## 4. 主な機能
 
-* Database creation
+### 🗓️ 時間ブロック・カレンダー
+- 1日を時間単位のブロックとして視覚的に描画。
+- 予定とタスクを同一時間軸上で色分け表示し、1日の流れを直感的に把握。
 
-* Database initialization
+### 🌤️ 天気連動型リマインダー（API連携）
+- OpenWeatherMap APIから現在地の降水確率と天候を取得。
+- **自動前倒しロジック**: 雨予報の場合、移動時間を自動的に15分（または指定時間）前倒ししてスケジュールを再計算。
+- 画面トップへのポジティブなアラート表示。
 
-* How to run the test suite
+### ⏳ 残り時間カウントダウン
+- 現在時刻から「次の予定」までの残り時間をリアルタイムにカウントダウン。
+- 予定直前にスムーズな行動切り替えを促す視覚的エフェクト。
 
-* Services (job queues, cache servers, search engines, etc.)
+## 5. 利用の流れ
+1. **ログイン**: ユーザー登録・ログインを行い、パーソナライズされた環境を作成。
+2. **トップページ**: 今日の予定、天気、優先タスクを一目で確認。
+3. **カレンダー・タスク管理**: 予定の入力や、タスクを時間枠へ割り当て。
+4. **行動・完了報告**: アプリの提示する時間に従って行動し、タスクを完了。
 
-* Deployment instructions
+## 6. データベース設計
 
-* ...
+### users テーブル
+| Column             | Type   | Options                   |
+| ------------------ | ------ | ------------------------- |
+| name               | string | null: false               |
+| email              | string | null: false, unique: true |
+| encrypted_password | string | null: false               |
+
+### tasks テーブル
+| Column         | Type       | Options                        |
+| -------------- | ---------- | ------------------------------ |
+| title          | string     | null: false                    |
+| content        | text       |                                |
+| priority_level | integer    | null: false (1〜4の重要度)      |
+| is_completed   | boolean    | default: false                 |
+| user           | references | null: false, foreign_key: true |
+
+### events (予定) テーブル
+| Column     | Type       | Options                        |
+| ---------- | ---------- | ------------------------------ |
+| title      | string     | null: false                    |
+| start_time | datetime   | null: false                    |
+| end_time   | datetime   | null: false                    |
+| location   | string     |                                |
+| user       | references | null: false, foreign_key: true |
+
+## 7. 開発環境
+- **言語**: Ruby 3.2.2 (Rails 7.1.6)
+- **データベース**: PostgreSQL 14.22
+- **インフラ**: Render
+- **API**: OpenWeatherMap API
+- **管理**: GitHub / GitHub Desktop
+
