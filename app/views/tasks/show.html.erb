@@ -10,6 +10,14 @@
     <strong>内容：</strong><br>
     <%= simple_format(@task.content) %>
   </p>
+  <p>
+    <strong>期限：</strong>
+    <%= @task.deadline %>
+  </p>
+  <p>
+    <strong>完了：</strong>
+    <%= @task.is_completed %>
+  </p>
 </div>
 
 <hr>
