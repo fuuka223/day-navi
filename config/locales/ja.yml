@@ -32,6 +32,7 @@ ja:
     models:
       task: タスク
       user: ユーザー
+      schedule: 予定
     attributes:
       task:
         title: タイトル
@@ -45,6 +46,11 @@ ja:
         email: メールアドレス
         password: パスワード
         password_confirmation: パスワード（確認用）
+      schedule:
+        title: タイトル
+        content: 内容
+        start_time: 開始時間
+        end_time: 終了時間
     errors:
       messages:
         required: を入力してください
