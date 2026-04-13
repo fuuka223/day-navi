@@ -2,10 +2,6 @@
 
 <%= link_to "タスク追加", new_task_path %>
 
-<<h1>タスク一覧</h1>
-
-<%= link_to "タスク追加", new_task_path %>
-
 <div>
   <% @tasks.each do |task| %>
     <%= link_to task_path(task) do %>
