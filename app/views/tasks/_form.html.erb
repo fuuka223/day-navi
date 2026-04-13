@@ -1,0 +1,40 @@
+<%= form_with model: task, local: true do |f| %>
+  <% if task.errors.any? %>
+    <div id="error_explanation">
+      <ul>
+        <% task.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :title, "タイトル" %><br>
+    <%= f.text_field :title %>
+  </div>
+
+  <div class="field">
+    <%= f.label :content, "内容" %><br>
+    <%= f.text_area :content %>
+  </div>
+
+  <div class="field">
+    <%= f.label :priority_level, "優先度" %><br>
+    <%= f.select :priority_level, [["1:緊急・重要", 1], ["2:重要・非緊急", 2], ["3:緊急・非重要", 3], ["4:非緊急・非重要", 4]] %>
+  </div>
+
+  <div>
+    <%= f.label :deadline, "期限" %>
+    <%= f.datetime_field :deadline %>
+  </div>
+
+  <div>
+    <%= f.label :is_completed, "完了ステータス" %>
+    <%= f.check_box :is_completed %> 完了
+  </div>
+
+  <div class="actions">
+    <%= f.submit yield(:button_text) %>
+  </div>
+<% end %>

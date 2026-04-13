@@ -1,0 +1,32 @@
+<h1>タスク詳細</h1>
+
+<div>
+  <h2><%= @task.title %></h2>
+  <p>
+    <strong>優先度：</strong>
+    <%= @task.priority_level %>
+  </p>
+  <p>
+    <strong>内容：</strong><br>
+    <%= simple_format(@task.content) %>
+  </p>
+  <p>
+    <strong>期限：</strong>
+    <%= @task.deadline %>
+  </p>
+  <p>
+    <strong>完了：</strong>
+    <%= @task.is_completed %>
+  </p>
+</div>
+
+<hr>
+
+<div>
+  <%= link_to "編集する", edit_task_path(@task) %> |
+  
+  <%= link_to "削除する", task_path(@task), 
+              data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか？" } %> |
+  
+  <%= link_to "一覧に戻る", tasks_path %>
+</div>

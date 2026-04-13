@@ -1,0 +1,7 @@
+<% provide(:button_text, 'タスクを更新する') %>
+<h1>タスクの編集</h1>
+
+<%= render 'form', task: @task %>
+
+<%= link_to "詳細を表示", task_path(@task) %> |
+<%= link_to "戻る", tasks_path %>
