@@ -15,4 +15,9 @@ Rails.application.routes.draw do
       patch :toggle_status
     end
   end
+  resources :schedules do
+    collection do
+      get 'calendar'
+    end
+  end
 end
