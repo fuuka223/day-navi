@@ -1,2 +1,24 @@
-<h1>Tasks#show</h1>
-<p>Find me in app/views/tasks/show.html.erb</p>
+<h1>タスク詳細</h1>
+
+<div>
+  <h2><%= @task.title %></h2>
+  <p>
+    <strong>優先度：</strong>
+    <%= @task.priority_level %>
+  </p>
+  <p>
+    <strong>内容：</strong><br>
+    <%= simple_format(@task.content) %>
+  </p>
+</div>
+
+<hr>
+
+<div>
+  <%= link_to "編集する", edit_task_path(@task) %> |
+  
+  <%= link_to "削除する", task_path(@task), 
+              data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか？" } %> |
+  
+  <%= link_to "一覧に戻る", tasks_path %>
+</div>
