@@ -4,9 +4,11 @@
 
 <div>
   <% @tasks.each do |task| %>
-    <div>
-      <h3><%= task.title %>(優先度: <%= task.priority_level %>)</h3>
-      <p><%= task.content %></p>
-    </div>
+    <%= link_to task_path(task) do %>
+      <div>
+        <h3><%= task.title %>(優先度: <%= task.priority_level %>)</h3>
+        <p><%= task.content %></p>
+      </div>
+    <% end %>
   <% end %>
 </div>

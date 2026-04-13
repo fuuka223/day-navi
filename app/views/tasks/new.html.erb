@@ -1,25 +1,7 @@
+<% provide(:button_text, 'タスクを登録する') %>
 <h1>タスク作成</h1>
 
-<%= form_with model:@task, local: true do |f| %>
-
-  <div>
-    <%= f.label :title, "タスク名" %>
-    <%= f.text_field :title, autofocus: true %>
-  </div>
-  
-  <div>
-    <%= f.label :content, "内容" %>
-    <%= f.text_area :content %>
-  </div>
-  
-  <div>
-    <%= f.label :priority_level, "優先度 (1:緊急・重要, 2:緊急・非重要, 3:非緊急・重要, 4:非緊急・非重要)" %>
-    <%= f.select :priority_level, [1, 2, 3, 4] %>
-  </div>
-  
-  <%= f.submit "追加する" %>
-
-<% end %>
+<%= render 'form', task: @task %>
 
 <%= link_to "戻る", tasks_path %>
 
