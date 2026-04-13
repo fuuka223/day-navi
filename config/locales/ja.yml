@@ -14,8 +14,12 @@ ja:
     messages:
       blank: を入力してください
       too_long: は%{count}文字以内で入力してください
+      too_short: は%{count}文字以上で入力してください
       inclusion: は一覧にありません
       required: を入力してください
+      taken: はすでに存在します
+      invalid: は不正な値です
+      confirmation: と%{attribute}の入力が一致しません
 
   activerecord:
     errors:
@@ -23,8 +27,11 @@ ja:
       models:
         task:
           format: "%{attribute}%{message}"
+        user:
+          format: "%{attribute}%{message}"
     models:
       task: タスク
+      user: ユーザー
     attributes:
       task:
         title: タイトル
@@ -33,6 +40,11 @@ ja:
         is_completed: 完了ステータス
         deadline: 期限
         user: ユーザー
+      user:
+        nickname: ニックネーム
+        email: メールアドレス
+        password: パスワード
+        password_confirmation: パスワード（確認用）
     errors:
       messages:
         required: を入力してください
