@@ -9,3 +9,30 @@ ja:
       default: "%Y/%m/%d"
       long: "%Y年%m月%d日"
       short: "%m/%d"
+  errors:
+    format: "%{attribute}%{message}"
+    messages:
+      blank: を入力してください
+      too_long: は%{count}文字以内で入力してください
+      inclusion: は一覧にありません
+      required: を入力してください
+
+  activerecord:
+    errors:
+      format: "%{attribute}%{message}"
+      models:
+        task:
+          format: "%{attribute}%{message}"
+    models:
+      task: タスク
+    attributes:
+      task:
+        title: タイトル
+        content: 内容
+        priority_level: 優先度
+        is_completed: 完了ステータス
+        deadline: 期限
+        user: ユーザー
+    errors:
+      messages:
+        required: を入力してください

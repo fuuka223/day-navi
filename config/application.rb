@@ -26,5 +26,6 @@ module DayNavi
      
     
     config.i18n.default_locale = :ja
+    Faker::Config.locale = 'ja'
   end
 end
