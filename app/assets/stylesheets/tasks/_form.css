@@ -1,0 +1,83 @@
+/* フォーム全体 */
+.task-form {
+  background-color: white;
+  padding: 25px;
+  border-radius: 25px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: #888;
+  margin-bottom: 8px;
+  margin-left: 4px;
+}
+
+/* 入力欄の共通スタイル */
+.form-input {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid #eee;
+  border-radius: 15px;
+  background-color: #fcfcfc;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #e8a7a7;
+  background-color: white;
+}
+
+/* チェックボックス部分 */
+.inline-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.form-checkbox {
+  width: 20px;
+  height: 20px;
+  accent-color: #e8a7a7;
+}
+
+/* 登録ボタン */
+.submit-btn {
+  width: 100%;
+  padding: 16px;
+  background-color: #e8a7a7;
+  color: white;
+  border: none;
+  border-radius: 15px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-top: 20px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(232, 167, 167, 0.3);
+}
+
+/* エラーメッセージ */
+.error-messages {
+  background-color: #fff5f5;
+  color: #e74c3c;
+  padding: 15px;
+  border-radius: 15px;
+  margin-bottom: 20px;
+  font-size: 0.85rem;
+}
+
+.back-link {
+  font-size: 1.5rem;
+  color: #888;
+  text-decoration: none;
+  position: absolute;
+  left: 20px;
+}

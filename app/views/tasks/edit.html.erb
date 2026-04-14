@@ -1,7 +1,11 @@
-<% provide(:button_text, 'タスクを更新する') %>
-<h1>タスクの編集</h1>
+<div class="container">
+  <header class="page-header">
+    <%= link_to "←", tasks_path, class: "back-link" %>
+    <h1>タスクの編集</h1>
+  </header>
 
-<%= render 'form', task: @task %>
+  <% provide(:button_text, 'タスクを更新する') %>
+  
+  <%= render 'form', task: @task %>
 
-<%= link_to "詳細を表示", task_path(@task) %> |
-<%= link_to "戻る", tasks_path %>
+</div>

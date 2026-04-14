@@ -1,6 +1,6 @@
-<%= form_with model: task, local: true do |f| %>
+<%= form_with model: task, local: true, class: "task-form" do |f| %>
   <% if task.errors.any? %>
-    <div id="error_explanation">
+    <div class="error-messages">
       <ul>
         <% task.errors.full_messages.each do |message| %>
           <li><%= message %></li>
@@ -9,32 +9,36 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :title, "タイトル" %><br>
-    <%= f.text_field :title %>
+  <div class="form-group">
+    <%= f.label :title, "タイトル" %>
+    <%= f.text_field :title, placeholder: "何をしますか？", class: "form-input" %>
   </div>
 
-  <div class="field">
-    <%= f.label :content, "内容" %><br>
-    <%= f.text_area :content %>
+  <div class="form-group">
+    <%= f.label :content, "内容" %>
+    <%= f.text_area :content, rows: 4, placeholder: "詳細なメモなど", class: "form-input" %>
   </div>
 
-  <div class="field">
-    <%= f.label :priority_level, "優先度" %><br>
-    <%= f.select :priority_level, [["1:緊急・重要", 0], ["2:重要・非緊急", 1], ["3:緊急・非重要", 2], ["4:非緊急・非重要", 3]] %>
+  <div class="form-group">
+    <%= f.label :priority_level, "優先度" %>
+    <div class="select-wrapper">
+      <%= f.select :priority_level, 
+          [["重要・緊急", 0], ["重要・非緊急", 1], ["非重要・緊急", 2], ["非重要・非緊急", 3]], 
+          {}, { class: "form-input" } %>
+    </div>
   </div>
 
-  <div>
+  <div class="form-group">
     <%= f.label :deadline, "期限" %>
-    <%= f.datetime_field :deadline %>
+    <%= f.datetime_field :deadline, class: "form-input" %>
   </div>
 
-  <div>
-    <%= f.label :is_completed, "完了ステータス" %>
-    <%= f.check_box :is_completed %> 完了
+  <div class="form-group inline-group">
+    <%= f.check_box :is_completed, class: "form-checkbox" %>
+    <%= f.label :is_completed, "完了したタスクとして登録" %>
   </div>
 
   <div class="actions">
-    <%= f.submit yield(:button_text) %>
+    <%= f.submit yield(:button_text), class: "submit-btn" %>
   </div>
 <% end %>
