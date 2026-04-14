@@ -18,7 +18,7 @@ RSpec.describe Task, type: :model do
     end
 
     context '新規登録できないとき' do
-      # --- title 関連 ---
+      # ---title関連---
       it 'titleが空では登録できない' do
         @task.title = ''
         @task.valid?
@@ -30,7 +30,7 @@ RSpec.describe Task, type: :model do
         expect(@task.errors.full_messages).to include("タイトルは50文字以内で入力してください")
       end
 
-      # --- content 関連 ---
+      # ---content関連---
       it 'contentが空では登録できない' do
         @task.content = ''
         @task.valid?
@@ -42,7 +42,7 @@ RSpec.describe Task, type: :model do
         expect(@task.errors.full_messages).to include("内容は1000文字以内で入力してください")
       end
 
-      # --- priority_level 関連 ---
+      # ---priority_level関連 ---
       it 'priority_levelが空では登録できない' do
         @task.priority_level = nil
         @task.valid?
@@ -56,14 +56,14 @@ RSpec.describe Task, type: :model do
         end
       end
 
-      # --- is_completed 関連 ---
+      # ---is_completed関連 ---
       it 'is_completedが空では登録できない' do
         @task.is_completed = nil
         @task.valid?
         expect(@task.errors.full_messages).to include("完了ステータスは一覧にありません")
       end
 
-      # --- ユーザー関連 ---
+      # ---ユーザー関連---
       it 'userが紐付いていないと保存できない' do
         @task.user = nil
         @task.valid?

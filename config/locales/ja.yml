@@ -51,6 +51,7 @@ ja:
         content: 内容
         start_time: 開始時間
         end_time: 終了時間
+        user: ユーザー
     errors:
       messages:
         required: を入力してください
