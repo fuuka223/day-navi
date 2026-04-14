@@ -49,9 +49,11 @@ class TasksController < ApplicationController
 
   private
   def task_params
-    params.require(:task).permit(:title, :content, :priority_level, :is_completed, :deadline)
+    params_hash = params.require(:task).permit(:title, :content, :deadline, :priority_level)
+    params_hash[:priority_level] = params_hash[:priority_level].to_i if params_hash[:priority_level].present?
+    params_hash
   end
-
+  
   def set_task
     @task = current_user.tasks.find(params[:id])
   end

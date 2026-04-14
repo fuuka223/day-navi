@@ -1,8 +1,15 @@
 class Task < ApplicationRecord
   belongs_to :user
 
+  enum priority_level: { 
+    "重要・緊急": 0, 
+    "重要・非緊急": 1, 
+    "非重要・緊急": 2, 
+    "非重要・非緊急": 3 
+  }
+
   validates :title, presence: true, length: { maximum: 50 }
   validates :content, presence: true, length: { maximum: 1000 }
-  validates :priority_level, presence: true, inclusion: {in: 1..4 }
+  validates :priority_level, presence: true
   validates :is_completed, inclusion: {in: [true, false]}
 end

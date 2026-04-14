@@ -1,47 +1,71 @@
-<h1>タスク一覧</h1>
+<div class="container">
+  <header class="page-header">
+    <h1>タスク一覧</h1>
+  </header>
 
-<%= link_to "タスク追加", new_task_path %>
+  <main class="task-matrix">
+    <%# 1. 判定用の定義を配列で表示 %>
+    <% 
+      matrix_definition = [
+        { label: "重要・緊急", css: "important urgent" },
+        { label: "重要・非緊急", css: "important not-urgent" },
+        { label: "非重要・緊急", css: "not-important urgent" },
+        { label: "非重要・非緊急", css: "not-important not-urgent" }
+      ]
+    %>
 
-<div>
-  <% @tasks.each do |task| %>
-    <%= link_to task_path(task) do %>
-      <%# 期限切れ判定 %>
-      <% is_overdue = task.deadline.present? && task.deadline < Time.current && !task.is_completed %>
-      
-      <div style="border: 1px solid #ccc; margin-bottom: 10px; padding: 10px; border-radius: 8px;">
+    <% matrix_definition.each do |panel| %>
+      <section class="matrix-box <%= panel[:css] %>">
+        <h2><%= panel[:label] %></h2>
+        <div class="task-list">
+          
+          <%# 2. 判定ロジック：DBのpriority_levelと一致するか確認 %>
+          <% current_tasks = @tasks.select { |t| t.priority_level == panel[:label] } %>
+          
+          <% if current_tasks.any? %>
+            <% current_tasks.each do |task| %>
+              <% is_overdue = task.deadline.present? && task.deadline < Time.current && !task.is_completed %>
+              
+              <div class="task-card">
+                <div class="task-card-header">
+                  <%= button_to task.is_completed ? "✅" : "⬜️", 
+                              toggle_status_task_path(task), 
+                              method: :patch, 
+                              class: "status-btn" %>
+                  
+                  <%= link_to task.title, task_path(task), 
+                      class: "task-title", 
+                      style: "#{'text-decoration: line-through;' if task.is_completed} #{'color: #e74c3c;' if is_overdue}" %>
+                </div>
 
-        <div style="margin-right: 15px;">
-          <%= button_to task.is_completed ? "✅" : "⬜️", 
-                      toggle_status_task_path(task), 
-                      method: :patch, 
-                      style: "background: none; border: none; font-size: 24px; cursor: pointer;" %>
-         </div>
-        
-        <%# 完了済みなら打ち消し線、期限切れなら赤文字にする %>
-        <h3 style="<%= 'text-decoration: line-through;' if task.is_completed %> <%= 'color: red;' if is_overdue %>">
-          <%= task.title %> (優先度: <%= task.priority_level %>)
-        </h3>
-
-        <%# 期限の表示と、期限切れアラート %>
-        <% if task.deadline.present? %>
-          <p style="<%= 'color: red; font-weight: bold;' if is_overdue %>">
-            <%# 期限までの残り時間を計算 %>
-            <% remaining_days = (task.deadline.to_date - Date.current).to_i %>
-
-            <% if is_overdue %>
-              期限切れ（<%= remaining_days.abs %>日経過）
-            <% elsif remaining_days == 0 %>
-              今日が期限です！
-            <% elsif remaining_days == 1 %>
-              あと 1 日（明日）
-            <% else %>
-              あと <%= remaining_days %> 日
+                <% if task.deadline.present? %>
+                  <div class="task-deadline <%= 'overdue' if is_overdue %>">
+                    <small>
+                      <%= is_overdue ? "⚠️期限切れ" : "期限: #{l task.deadline, format: :short}" %>
+                    </small>
+                  </div>
+                <% end %>
+              </div>
             <% end %>
-    
-            <small>(<%= l task.deadline, format: :short %>)</small>
-          </p>
-        <% end %>
-      </div>
+          <% else %>
+            <%# タスクがない場合に、デバッグ用にDBの値を確認 %>
+            <p class="empty-msg"><small>未割当</small></p>
+          <% end %>
+        </div>
+      </section>
     <% end %>
+  </main>
+
+  <%# どこにも分類されなかったタスクをページ下部に表示（デバッグ用） %>
+  <% unmatched_tasks = @tasks.reject { |t| matrix_definition.map { |d| d[:label] }.include?(t.priority_level) } %>
+  <% if unmatched_tasks.any? %>
+    <div style="margin-top: 20px; padding: 10px; background: #eee; border-radius: 10px;">
+      <p style="font-size: 0.8rem; font-weight: bold;">⚠️ 分類エラーのタスク（表示形式を確認してください）</p>
+      <% unmatched_tasks.each do |t| %>
+        <p style="font-size: 0.7rem;"><%= t.title %> : 「<%= t.priority_level %>」</p>
+      <% end %>
+    </div>
   <% end %>
+
+  <%= link_to "+", new_task_path, class: "fab" %>
 </div>
