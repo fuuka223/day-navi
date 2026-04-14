@@ -25,10 +25,14 @@ class SchedulesController < ApplicationController
   end
 
   def show
-    @selected_date = params[:id].to_date
-    @schedules = current_user.schedules.where(start_time: @selected_date.all_day)
-  rescue Date::Error
-    @schedule = current_user.schedule.find(params[:id])
+    if params[:id].match?(/\A\d{4}-\d{2}-\d{2}\z/)
+      @selected_date = params[:id].to_date
+      @schedules = current_user.schedules.where(start_time: @selected_date.all_day)
+    else
+      @schedule = current_user.schedules.find(params[:id])
+      @selected_date = @schedule.start_time.to_date
+      @schedules = current_user.schedules.where(start_time: @selected_date.all_day)
+    end
   end
 
   def edit
