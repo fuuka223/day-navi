@@ -1,4 +1,12 @@
 Rails.application.routes.draw do
+  get 'schedules/index'
+  get 'schedules/calendar'
+  get 'schedules/new'
+  get 'schedules/create'
+  get 'schedules/show'
+  get 'schedules/edit'
+  get 'schedules/update'
+  get 'schedules/destroy'
   devise_for :users
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
@@ -13,6 +21,11 @@ Rails.application.routes.draw do
   resources :tasks do
     member do
       patch :toggle_status
+    end
+  end
+  resources :schedules do
+    collection do
+      get 'calendar'
     end
   end
 end

@@ -4,9 +4,12 @@
   <div>
     <%= link_to "新しいタスクを追加", new_task_path %> |
     <%= link_to "タスク一覧詳細へ", tasks_path %>
+    <%= link_to "カレンダーを確認", calendar_schedules_path %>
   </div>
 
   <hr>
+
+  <%# ---タスク状況--- %>
 
   <h3>現在のタスク状況</h3>
 
@@ -48,6 +51,28 @@
       <p>現在登録されているタスクはありません。</p>
     <% end %>
   </div>
+
+  <hr>
+
+  <%# ---今日の予定--- %>
+  
+  <h3>今日の予定</h3>
+  <div>
+    <% if @today_schedules.any? %>
+      <div style="background-color: #f9f9f9; padding: 10px; border-radius: 5px; margin-bottom: 20px;">
+        <% @today_schedules.each do |schedule| %>
+          <div style="margin-bottom: 5px;">
+            <strong><%= schedule.start_time.strftime("%H:%M") %></strong> : 
+            <%= link_to schedule.title, schedule_path(Date.today) %>
+          </div>
+        <% end %>
+        <%= link_to "今日の予定を詳しく見る", schedule_path(Date.today), style: "font-size: 0.8rem;" %>
+      </div>
+    <% else %>
+      <p>今日の予定はありません。</p>
+    <% end %>
+  </div>
+
 
 <% else %>
   <h2>Day-Naviへようこそ</h2>

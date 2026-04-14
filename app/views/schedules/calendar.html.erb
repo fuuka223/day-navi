@@ -1,0 +1,18 @@
+<div>
+  <div>
+    <h1>予定カレンダー</h1>
+    <%= link_to '予定を追加', new_schedule_path %>
+  </div>
+
+  <%= month_calendar(events: @schedules) do |date, schedules| %>
+    <%= link_to date.day, schedule_path(date) %>
+
+    <div>
+      <% schedules.each do |schedule| %>
+        <div class="schedule-item">
+          <small>●</small> <%= schedule.title.truncate(10) %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>
