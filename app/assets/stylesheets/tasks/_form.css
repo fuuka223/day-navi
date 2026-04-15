@@ -1,55 +1,75 @@
-/* フォーム全体 */
 .task-form {
+  position: relative;
+  overflow: hidden;
   background-color: white;
-  padding: 25px;
+  padding: 25px 25px 25px 35px; 
   border-radius: 25px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease;
 }
 
-.form-group {
-  margin-bottom: 20px;
-}
-
-.form-group label {
+/* 優先度の色を示す縦棒 */
+.priority-indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 15px;
+  height: 100%;
+  background-color: #f0f0f0;
+  transition: background-color 0.4s ease;
+  z-index: 5;
   display: block;
-  font-size: 0.85rem;
-  font-weight: bold;
-  color: #888;
-  margin-bottom: 8px;
-  margin-left: 4px;
 }
 
-/* 入力欄の共通スタイル */
+.form-group, .actions, .error-messages {
+  position: relative;
+  z-index: 2;
+}
+
+.form-group { position: relative; margin-bottom: 24px; }
+
+/* 入力中フィールドの強調 */
+.form-group.is-active label {
+  color: #e8a7a7;
+  transform: translateX(4px);
+}
+
 .form-input {
   width: 100%;
   padding: 14px;
-  border: 1px solid #eee;
+  border: 2px solid #f0f0f0;
   border-radius: 15px;
   background-color: #fcfcfc;
   font-size: 1rem;
-  transition: border-color 0.3s ease;
+  transition: all 0.2s ease;
 }
 
-.form-input:focus {
-  outline: none;
-  border-color: #e8a7a7;
-  background-color: white;
+/* カウント文字そのものを赤くする */
+.char-count.is-error {
+  color: #ff4d4d !important;
+  font-weight: bold;
 }
 
-/* チェックボックス部分 */
-.inline-group {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+/* 入力欄全体を赤くする */
+.form-input.is-invalid {
+  background-color: rgba(255, 77, 77, 0.05);
+  border-color: #ff4d4d;
 }
 
-.form-checkbox {
-  width: 20px;
-  height: 20px;
-  accent-color: #e8a7a7;
+/* バリデーションエラー表示 */
+.form-input.is-invalid {
+  border-color: #ffcccc;
+  background-color: #fffafa;
 }
 
-/* 登録ボタン */
+.char-count {
+  position: absolute;
+  right: 10px;
+  top: 0;
+  font-size: 0.7rem;
+  color: #ccc;
+}
+
 .submit-btn {
   width: 100%;
   padding: 16px;
@@ -62,22 +82,12 @@
   margin-top: 20px;
   cursor: pointer;
   box-shadow: 0 4px 10px rgba(232, 167, 167, 0.3);
+  transition: all 0.2s ease;
 }
 
-/* エラーメッセージ */
-.error-messages {
-  background-color: #fff5f5;
-  color: #e74c3c;
-  padding: 15px;
-  border-radius: 15px;
-  margin-bottom: 20px;
-  font-size: 0.85rem;
-}
-
-.back-link {
-  font-size: 1.5rem;
-  color: #888;
-  text-decoration: none;
-  position: absolute;
-  left: 20px;
+/* 保存中などの無効状態 */
+.submit-btn:disabled {
+  background-color: #ccc;
+  box-shadow: none;
+  cursor: not-allowed;
 }

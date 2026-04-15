@@ -1,4 +1,7 @@
-<%= form_with model: task, local: true, class: "task-form" do |f| %>
+<%= form_with model: task, local: true, class: "task-form", data: { form_type: (task.new_record? ? "new" : "edit") } do |f| %>
+
+  <div class="priority-indicator js-priority-indicator"></div>
+
   <% if task.errors.any? %>
     <div class="error-messages">
       <ul>
@@ -9,22 +12,27 @@
     </div>
   <% end %>
 
-  <div class="form-group">
+  <div class="form-group" data-field="title">
     <%= f.label :title, "タイトル" %>
-    <%= f.text_field :title, placeholder: "何をしますか？", class: "form-input" %>
+    <%= f.text_field :title, placeholder: "何をしますか？（50文字以内）", class: "form-input js-input" %>
+    <%# タイトル用の文字数表示 %>
+    <span class="char-count"></span>
   </div>
 
-  <div class="form-group">
+  <div class="form-group" data-field="content">
     <%= f.label :content, "内容" %>
-    <%= f.text_area :content, rows: 4, placeholder: "詳細なメモなど", class: "form-input" %>
+    <%= f.text_area :content, rows: 4, placeholder: "詳細なメモなど（1000文字以内）", class: "form-input js-input" %>
+    <%# --- 内容用の文字数表示 --- %>
+    <span class="char-count"></span>
   </div>
 
   <div class="form-group">
     <%= f.label :priority_level, "優先度" %>
     <div class="select-wrapper">
       <%= f.select :priority_level, 
-          [["重要・緊急", 0], ["重要・非緊急", 1], ["非重要・緊急", 2], ["非重要・非緊急", 3]], 
-          {}, { class: "form-input" } %>
+          [["重要・緊急", "重要・緊急"], ["重要・非緊急", "重要・非緊急"], ["非重要・緊急", "非重要・緊急"], ["非重要・非緊急", "非重要・非緊急"]], 
+          { include_blank: "--- 選択してください ---" },
+          { class: "form-input js-priority-select" } %>
     </div>
   </div>
 
@@ -39,6 +47,6 @@
   </div>
 
   <div class="actions">
-    <%= f.submit yield(:button_text), class: "submit-btn" %>
+    <%= f.submit yield(:button_text), class: "submit-btn js-submit" %>
   </div>
 <% end %>
