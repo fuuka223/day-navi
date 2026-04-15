@@ -1,0 +1,173 @@
+.schedule-detail-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: "Inter", "Hiragino Sans", sans-serif;
+}
+
+.timeline-container {
+  border-top: 1px solid #eee;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.timeline-row {
+  display: flex;
+  min-height: 50px;
+  border-bottom: 1px solid #f9f9f9;
+}
+
+.time-label {
+  width: 70px;
+  padding: 10px;
+  font-size: 0.8rem;
+  color: #999;
+  text-align: right;
+  background-color: #fafafa;
+  border-right: 1px solid #eee;
+}
+
+.time-content {
+  flex-grow: 1;
+  padding: 5px 15px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* 予定の帯（バー）のデザイン */
+.schedule-bar {
+  background: linear-gradient(90deg, #6c5ce7, #a29bfe); /* 洗練されたパープル */
+  color: white;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  box-shadow: 0 2px 4px rgba(108, 92, 231, 0.2);
+}
+
+.timeline-wrapper {
+  position: relative;
+  height: 1500px; /* 24時間分（60px × 24 + α） */
+  margin-top: 30px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px 10px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.timeline-grid {
+  position: relative;
+  height: 100%;
+}
+
+.grid-row {
+  position: absolute;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  height: 0;
+}
+
+.grid-time {
+  width: 60px;
+  font-size: 0.75rem;
+  color: #999;
+  text-align: right;
+  padding-right: 15px;
+  font-family: "Inter", sans-serif;
+  margin-top: -1px; 
+}
+
+.grid-line {
+  flex-grow: 1;
+  border-top: 1px solid #f0f0f0;
+}
+
+/* 予定の帯を自由に配置 */
+.schedule-overlay {
+  position: absolute;
+  top: 20px;
+  left: 85px;
+  right: 20px;
+}
+
+.schedule-bar-absolute {
+  position: absolute;
+  width: 100%;
+  background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+  color: white;
+  border-radius: 6px;
+  padding: 4px 12px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  box-shadow: 0 4px 6px rgba(108, 92, 231, 0.2);
+  z-index: 10;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+/* スワイプ */
+.swipe-container {
+  position: absolute;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 6px;
+  background-color: transparent;
+}
+
+.swipe-actions {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  display: flex;
+  z-index: 1;
+}
+
+.swipe-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.3s ease-out;
+  cursor: pointer;
+  background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  color: white;
+  border-radius: 6px;
+}
+
+/* 下3分の1のウィンドウ */
+.bottom-sheet {
+  position: fixed;
+  bottom: -40%;
+  left: 0;
+  width: 100%;
+  height: 35%;
+  background: white;
+  box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+  border-radius: 20px 20px 0 0;
+  z-index: 1000;
+  transition: bottom 0.3s ease;
+  padding: 20px;
+}
+
+.bottom-sheet.show {
+  bottom: 0;
+}
+
+.sheet-handle {
+  width: 40px;
+  height: 5px;
+  background: #ddd;
+  margin: 0 auto 20px;
+  border-radius: 10px;
+  cursor: pointer;
+}

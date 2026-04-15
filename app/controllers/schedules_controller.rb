@@ -29,13 +29,11 @@ class SchedulesController < ApplicationController
   end
 
   def show
-    if params[:id].match?(/\A\d{4}-\d{2}-\d{2}\z/)
-      @selected_date = params[:id].to_date
-      @schedules = current_user.schedules.where(start_time: @selected_date.all_day)
+    if params[:id]
+      @date = Date.parse(params[:id])
+      @schedules = current_user.schedules.where(start_time: @date.all_day)
     else
-      @schedule = current_user.schedules.find(params[:id])
-      @selected_date = @schedule.start_time.to_date
-      @schedules = current_user.schedules.where(start_time: @selected_date.all_day)
+      redirect_to schedules_path, alert: "日付が正しく指定されていません"
     end
   end
 
