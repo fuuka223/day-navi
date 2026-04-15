@@ -28,8 +28,16 @@
         <div class="swipe-container" style="top: <%= top %>px; height: <%= height %>px;">
           <%# スライド時に後ろから見えるボタン %>
           <div class="swipe-actions">
-            <%= link_to '編集', edit_schedule_path(schedule), class: 'btn-edit' %>
-            <%= link_to '削除', schedule_path(schedule), data: { "turbo-method": :delete, "turbo-confirm": '削除しますか？' }, class: 'btn-delete' %>
+            <%# 編集ボタン %>
+            <%= link_to edit_schedule_path(schedule), class: 'btn-edit' do %>
+              <i class="fa-solid fa-pen"></i>
+            <% end %>
+            <%# 削除ボタン（クッション付き） %>
+            <%= link_to schedule_path(schedule), 
+                class: 'btn-delete',
+                data: { "turbo-method": :delete, "turbo-confirm": '本当に削除しますか？' } do %>
+              <i class="fa-solid fa-trash-can"></i>
+            <% end %>
           </div>
           <%# 表に見える予定の帯 %>
           <div class="schedule-bar-absolute swipe-content" 

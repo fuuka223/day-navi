@@ -29,11 +29,11 @@ class SchedulesController < ApplicationController
   end
 
   def show
-    if params[:id]
+    begin
       @date = Date.parse(params[:id])
       @schedules = current_user.schedules.where(start_time: @date.all_day)
-    else
-      redirect_to schedules_path, alert: "日付が正しく指定されていません"
+    rescue Date::Error
+      redirect_to schedules_path, alert: "有効な日付ではありません"
     end
   end
 
