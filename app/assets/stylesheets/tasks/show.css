@@ -1,0 +1,91 @@
+/* 詳細ページ全体 */
+.task-detail-card {
+  background-color: white;
+  padding: 30px;
+  border-radius: 25px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.detail-status {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+/* 優先度バッジ */
+.priority-badge {
+  font-size: 0.75rem;
+  padding: 4px 12px;
+  border-radius: 10px;
+  font-weight: bold;
+}
+.priority-badge.p-0 { background-color: var(--urgent-color); }
+.priority-badge.p-1 { background-color: var(--important-color); }
+.priority-badge.p-2 { background-color: var(--not-urgent-color); }
+.priority-badge.p-3 { background-color: var(--not-important-color); }
+
+.status-badge.completed {
+  background-color: #d1fae5;
+  color: #065f46;
+  font-size: 0.75rem;
+  padding: 4px 12px;
+  border-radius: 10px;
+}
+
+.detail-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 25px;
+  color: var(--text-main);
+}
+
+.detail-section {
+  margin-bottom: 20px;
+}
+
+.detail-section label {
+  display: block;
+  font-size: 0.8rem;
+  color: #aaa;
+  margin-bottom: 5px;
+}
+
+.detail-content {
+  line-height: 1.6;
+  color: #555;
+  background: #fafafa;
+  padding: 15px;
+  border-radius: 15px;
+}
+
+/* アクションボタン */
+.detail-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 30px;
+}
+
+.edit-btn, .delete-btn {
+  width: 100%;
+  padding: 14px;
+  border-radius: 15px;
+  text-align: center;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.edit-btn {
+  background-color: #e8a7a7;
+  color: white;
+}
+
+.delete-btn {
+  background-color: #fff;
+  color: #e74c3c;
+  border: 1px solid #e74c3c;
+}
+
+.delete-btn:hover {
+  background-color: #fff5f5;
+}

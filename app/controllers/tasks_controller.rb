@@ -44,12 +44,17 @@ class TasksController < ApplicationController
 
   def toggle_status
     @task.update(is_completed: !@task.is_completed)
-    redirect_to tasks_path
+    respond_to do |format|
+    format.turbo_stream { head :no_content }
+    format.html { redirect_to tasks_path }
+  end
   end
 
   private
   def task_params
-    params.require(:task).permit(:title, :content, :priority_level, :is_completed, :deadline)
+    params_hash = params.require(:task).permit(:title, :content, :deadline, :priority_level)
+    params_hash[:priority_level] = params_hash[:priority_level].to_i if params_hash[:priority_level].present?
+    params_hash
   end
 
   def set_task

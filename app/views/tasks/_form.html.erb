@@ -1,6 +1,9 @@
-<%= form_with model: task, local: true do |f| %>
+<%= form_with model: task, local: true, class: "task-form", data: { form_type: (task.new_record? ? "new" : "edit") } do |f| %>
+
+  <div class="priority-indicator js-priority-indicator"></div>
+
   <% if task.errors.any? %>
-    <div id="error_explanation">
+    <div class="error-messages">
       <ul>
         <% task.errors.full_messages.each do |message| %>
           <li><%= message %></li>
@@ -9,32 +12,41 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :title, "タイトル" %><br>
-    <%= f.text_field :title %>
+  <div class="form-group" data-field="title">
+    <%= f.label :title, "タイトル" %>
+    <%= f.text_field :title, placeholder: "何をしますか？（50文字以内）", class: "form-input js-input" %>
+    <%# タイトル用の文字数表示 %>
+    <span class="char-count"></span>
   </div>
 
-  <div class="field">
-    <%= f.label :content, "内容" %><br>
-    <%= f.text_area :content %>
+  <div class="form-group" data-field="content">
+    <%= f.label :content, "内容" %>
+    <%= f.text_area :content, rows: 4, placeholder: "詳細なメモなど（1000文字以内）", class: "form-input js-input" %>
+    <%# --- 内容用の文字数表示 --- %>
+    <span class="char-count"></span>
   </div>
 
-  <div class="field">
-    <%= f.label :priority_level, "優先度" %><br>
-    <%= f.select :priority_level, [["1:緊急・重要", 1], ["2:重要・非緊急", 2], ["3:緊急・非重要", 3], ["4:非緊急・非重要", 4]] %>
+  <div class="form-group">
+    <%= f.label :priority_level, "優先度" %>
+    <div class="select-wrapper">
+      <%= f.select :priority_level, 
+          [["重要・緊急", "重要・緊急"], ["重要・非緊急", "重要・非緊急"], ["非重要・緊急", "非重要・緊急"], ["非重要・非緊急", "非重要・非緊急"]], 
+          { include_blank: "--- 選択してください ---" },
+          { class: "form-input js-priority-select" } %>
+    </div>
   </div>
 
-  <div>
+  <div class="form-group">
     <%= f.label :deadline, "期限" %>
-    <%= f.datetime_field :deadline %>
+    <%= f.datetime_field :deadline, class: "form-input" %>
   </div>
 
-  <div>
-    <%= f.label :is_completed, "完了ステータス" %>
-    <%= f.check_box :is_completed %> 完了
+  <div class="form-group inline-group">
+    <%= f.check_box :is_completed, class: "form-checkbox" %>
+    <%= f.label :is_completed, "完了したタスクとして登録" %>
   </div>
 
   <div class="actions">
-    <%= f.submit yield(:button_text) %>
+    <%= f.submit yield(:button_text), class: "submit-btn js-submit" %>
   </div>
 <% end %>

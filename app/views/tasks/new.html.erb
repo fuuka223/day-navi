@@ -1,7 +1,9 @@
-<% provide(:button_text, 'タスクを登録する') %>
-<h1>タスク作成</h1>
+<div class="container">
+  <header class="page-header">
+    <%= link_to "←", tasks_path, class: "back-link" %>
+    <h1>タスク作成</h1>
+  </header>
 
-<%= render 'form', task: @task %>
-
-<%= link_to "戻る", tasks_path %>
-
+  <% provide(:button_text, 'タスクを登録する') %>
+  <%= render 'form', task: @task %>
+</div>

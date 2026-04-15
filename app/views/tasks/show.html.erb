@@ -1,32 +1,41 @@
-<h1>タスク詳細</h1>
+<div class="container">
+  <header class="page-header">
+    <%= link_to "←", tasks_path, class: "back-link" %>
+    <h1>タスク詳細</h1>
+  </header>
 
-<div>
-  <h2><%= @task.title %></h2>
-  <p>
-    <strong>優先度：</strong>
-    <%= @task.priority_level %>
-  </p>
-  <p>
-    <strong>内容：</strong><br>
-    <%= simple_format(@task.content) %>
-  </p>
-  <p>
-    <strong>期限：</strong>
-    <%= @task.deadline %>
-  </p>
-  <p>
-    <strong>完了：</strong>
-    <%= @task.is_completed %>
-  </p>
-</div>
+  <div class="task-detail-card">
+    <div class="detail-status">
+      <span class="priority-badge p-<%= @task.priority_level_before_type_cast %>">
+        <%= @task.priority_level %>
+      </span>
+      <% if @task.is_completed %>
+        <span class="status-badge completed">完了済み</span>
+      <% end %>
+    </div>
 
-<hr>
+    <h2 class="detail-title"><%= @task.title %></h2>
 
-<div>
-  <%= link_to "編集する", edit_task_path(@task) %> |
-  
-  <%= link_to "削除する", task_path(@task), 
-              data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか？" } %> |
-  
-  <%= link_to "一覧に戻る", tasks_path %>
+    <div class="detail-section">
+      <label>内容</label>
+      <div class="detail-content">
+        <%= simple_format(@task.content) %>
+      </div>
+    </div>
+
+    <div class="detail-section">
+      <label>期限</label>
+      <p class="detail-text">
+        <%= @task.deadline.present? ? l(@task.deadline, format: :long) : "未設定" %>
+      </p>
+    </div>
+
+    <div class="detail-actions">
+      <%= link_to "編集する", edit_task_path(@task), class: "edit-btn" %>
+      
+      <%= link_to "削除する", task_path(@task), 
+                  data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか？" },
+                  class: "delete-btn" %>
+    </div>
+  </div>
 </div>

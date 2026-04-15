@@ -1,47 +1,47 @@
-<h1>タスク一覧</h1>
+<div class="container" data-controller="task-list">
+  <header class="page-header">
+    <h1>タスク一覧</h1>
+  </header>
 
-<%= link_to "タスク追加", new_task_path %>
+  <main class="task-matrix">
+    <% matrix_definition = [
+      { label: "重要・緊急", css: "important urgent" },
+      { label: "重要・非緊急", css: "important not-urgent" },
+      { label: "非重要・緊急", css: "not-important urgent" },
+      { label: "非重要・非緊急", css: "not-important not-urgent" }
+    ] %>
 
-<div>
-  <% @tasks.each do |task| %>
-    <%= link_to task_path(task) do %>
-      <%# 期限切れ判定 %>
-      <% is_overdue = task.deadline.present? && task.deadline < Time.current && !task.is_completed %>
-      
-      <div style="border: 1px solid #ccc; margin-bottom: 10px; padding: 10px; border-radius: 8px;">
+    <% matrix_definition.each_with_index do |panel, i| %>
+      <section class="matrix-box <%= panel[:css] %>">
+        <h2><%= panel[:label] %></h2>
+        <div class="task-list">
+          <%# 優先度と一致するタスクを抽出 %>
+          <% @tasks.select { |t| t.priority_level_before_type_cast == i }.each do |task| %>
+            <div class="task-card" 
+                 data-completed="<%= task.is_completed %>"
+                 data-overdue="<%= task.deadline.present? && task.deadline < Time.current && !task.is_completed %>">
+              
+              <div class="task-card-header">
+                <%= button_to toggle_status_task_path(task), 
+                            method: :patch, 
+                            class: "status-btn js-toggle" do %>
+                  <%= task.is_completed ? "✅" : "⬜️" %>
+                <% end %>
+                
+                <%= link_to task.title, task_path(task), class: "task-title" %>
+              </div>
 
-        <div style="margin-right: 15px;">
-          <%= button_to task.is_completed ? "✅" : "⬜️", 
-                      toggle_status_task_path(task), 
-                      method: :patch, 
-                      style: "background: none; border: none; font-size: 24px; cursor: pointer;" %>
-         </div>
-        
-        <%# 完了済みなら打ち消し線、期限切れなら赤文字にする %>
-        <h3 style="<%= 'text-decoration: line-through;' if task.is_completed %> <%= 'color: red;' if is_overdue %>">
-          <%= task.title %> (優先度: <%= task.priority_level %>)
-        </h3>
-
-        <%# 期限の表示と、期限切れアラート %>
-        <% if task.deadline.present? %>
-          <p style="<%= 'color: red; font-weight: bold;' if is_overdue %>">
-            <%# 期限までの残り時間を計算 %>
-            <% remaining_days = (task.deadline.to_date - Date.current).to_i %>
-
-            <% if is_overdue %>
-              期限切れ（<%= remaining_days.abs %>日経過）
-            <% elsif remaining_days == 0 %>
-              今日が期限です！
-            <% elsif remaining_days == 1 %>
-              あと 1 日（明日）
-            <% else %>
-              あと <%= remaining_days %> 日
-            <% end %>
-    
-            <small>(<%= l task.deadline, format: :short %>)</small>
-          </p>
-        <% end %>
-      </div>
+              <% if task.deadline.present? %>
+                <div class="task-deadline">
+                  <small><%= l task.deadline, format: :short %> まで</small>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </section>
     <% end %>
-  <% end %>
+  </main>
+
+  <%= link_to "+", new_task_path, class: "fab" %>
 </div>

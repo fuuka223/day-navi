@@ -1,0 +1,95 @@
+/* 4象限マトリクスのレイアウト */
+.task-matrix {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  min-height: 70vh;
+}
+
+.matrix-box {
+  padding: 12px;
+  border-radius: 20px;
+  min-height: 160px;
+}
+
+.matrix-box h2 {
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
+  margin-bottom: 12px;
+  color: #555;
+  opacity: 0.8;
+}
+
+/* 各象限の色設定 */
+.urgent.important { background-color: #ffe5e5; }
+.not-urgent.important { background-color: #fff9e5; }
+.urgent.not-important { background-color: #e5f3ff; }
+.not-urgent.not-important { background-color: #f0f0f0; }
+
+/* タスクカードのデザイン */
+.task-card {
+  background: #ffffff;
+  padding: 10px 12px;
+  border-radius: 12px;
+  margin-bottom: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+}
+
+/* 完了状態になると適用 */
+.task-card[data-completed="true"] {
+  opacity: 0.5;
+  transform: scale(0.98);
+}
+
+.task-card[data-completed="true"] .task-title {
+  text-decoration: line-through;
+  color: #8e8e8e;
+}
+
+/* 期限切れ状態かつ未完了の時に適用 */
+.task-card[data-overdue="true"][data-completed="false"] .task-title {
+  color: #e74c3c;
+  font-weight: bold;
+}
+
+/* ホバーエフェクト */
+.task-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.status-btn { background: none; border: none; cursor: pointer; font-size: 1.2rem; }
+
+/* タスク新規作成ボタン */
+.fab {
+  position: fixed;
+  bottom: 30px;
+  right: 20px;
+  
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+  
+  background-color: #e8a7a7;
+  color: white;
+  font-size: 36px;
+  font-weight: 300;
+  text-decoration: none;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  padding-bottom: 5px;
+
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  
+  transition: transform 0.1s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.fab:active {
+  transform: scale(0.9);
+}
