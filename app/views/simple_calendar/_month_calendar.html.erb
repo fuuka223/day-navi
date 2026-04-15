@@ -1,0 +1,38 @@
+<div class="simple-calendar">
+  <div class="calendar-heading">
+    <%= link_to "＜", calendar.url_for_previous_view, class: "nav-btn" %>
+
+    <div class="calendar-title">
+      <small class="calendar-year"><%= start_date.year %>年</small>
+      <strong class="calendar-month"><%= start_date.month %>月</strong>
+    </div>
+
+    <%= link_to "＞", calendar.url_for_next_view, class: "nav-btn" %>
+  </div>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <% ["日", "月", "火", "水", "木", "金", "土"].each do |day_name| %>
+          <th><%= day_name %></th>
+        <% end %>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% date_range.each_slice(7) do |week| %>
+        <tr>
+          <% week.each do |day| %>
+            <%= content_tag :td, class: calendar.td_classes_for(day) do %>
+              <% if defined?(Haml) && respond_to?(:block_is_haml?) && block_is_haml?(passed_block) %>
+                <% capture_haml(day, sorted_events.fetch(day, []), &passed_block) %>
+              <% else %>
+                <% passed_block.call day, sorted_events.fetch(day, []) %>
+              <% end %>
+            <% end %>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

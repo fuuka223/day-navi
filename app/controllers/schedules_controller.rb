@@ -8,6 +8,10 @@ class SchedulesController < ApplicationController
 
   def calendar
     @schedules = current_user.schedules
+    if current_user.city.present?
+      weather_data = WeatherService.fetch_weather(current_user.city)
+      @forecasts = parse_weather(weather_data) if weather_data && weather_data['list']
+    end
   end
 
   def new
@@ -59,5 +63,19 @@ class SchedulesController < ApplicationController
 
   def set_schedule
     @schedule = current_user.schedules.find(params[:id])
+  end
+
+  def parse_weather(data)
+  forecasts = {}
+  data['list'].each do |f|
+    date = Time.at(f['dt']).to_date
+    next if forecasts[date] && Time.at(f['dt']).hour != 12
+    forecasts[date] = {
+      temp: f['main']['temp'].round,
+      description: f['weather'][0]['description'],
+      icon: f['weather'][0]['icon']
+    }
+    end
+    forecasts
   end
 end
