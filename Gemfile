@@ -72,3 +72,4 @@ gem "factory_bot_rails"
 gem "faker"
 gem 'simple_calendar', '~> 2.4'
 gem 'dotenv-rails'
+gem 'sassc-rails'

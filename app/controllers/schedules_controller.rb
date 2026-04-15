@@ -10,7 +10,7 @@ class SchedulesController < ApplicationController
     @schedules = current_user.schedules
     if current_user.city.present?
       weather_data = WeatherService.fetch_weather(current_user.city)
-      @forecasts = parse_weather(weather_data) if weather_data
+      @forecasts = parse_weather(weather_data) if weather_data && weather_data['list']
     end
   end
 
@@ -75,6 +75,7 @@ class SchedulesController < ApplicationController
       description: f['weather'][0]['description'],
       icon: f['weather'][0]['icon']
     }
+    end
+    forecasts
   end
-  forecasts
 end
