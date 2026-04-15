@@ -37,17 +37,21 @@ window.hideDetail = function() {
 
 // --- 新規予定作成（タイムラインの背景クリック） ---
 window.createNewSchedule = function(event) {
-  // 予定の帯やボタンを触っている場合は何もしない
   if (event.target.closest('.swipe-content') || event.target.closest('.swipe-actions')) return;
 
   const timeline = document.getElementById('timeline');
   const rect = timeline.getBoundingClientRect();
   const y = event.clientY - rect.top;
+  
+  // クリック位置から時間を計算（1時間=60px想定）
   const hour = Math.floor(y / 60);
+  const startHour = String(hour).padStart(2, '0');
+  const endHour = String((hour + 1) % 24).padStart(2, '0'); // 1時間後。24時を超える場合は00時に
   
   hideDetail();
   
-  window.location.href = `/schedules/new?start_hour=${hour}`;
+  // URLに開始時刻と終了時刻を乗せて遷移
+  window.location.href = `/schedules/new?start_time=${startHour}:00&end_time=${endHour}:00`;
 };
 
 // --- スワイプ処理の関数定義 ---

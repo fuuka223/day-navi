@@ -16,7 +16,11 @@ class SchedulesController < ApplicationController
 
   def new
     @schedule = Schedule.new
-    @schedule.start_time = params[:start_date] if params[:start_date]
+    if params[:start_time] && params[:end_time]
+      base_date = Date.today 
+      @schedule.start_time = Time.zone.parse("#{base_date} #{params[:start_time]}")
+      @schedule.end_time = Time.zone.parse("#{base_date} #{params[:end_time]}")
+    end
   end
 
   def create
