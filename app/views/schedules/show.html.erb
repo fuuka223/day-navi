@@ -32,7 +32,7 @@
             <%= link_to edit_schedule_path(schedule), class: 'btn-edit' do %>
               <i class="fa-solid fa-pen"></i>
             <% end %>
-            <%# 削除ボタン（クッション付き） %>
+            <%# 削除ボタン %>
             <%= link_to schedule_path(schedule), 
                 class: 'btn-delete',
                 data: { "turbo-method": :delete, "turbo-confirm": '本当に削除しますか？' } do %>
@@ -41,8 +41,9 @@
           </div>
           <%# 表に見える予定の帯 %>
           <div class="schedule-bar-absolute swipe-content" 
-              onclick="showDetail('<%= schedule.title %>', '<%= schedule.start_time.strftime("%H:%M") %>〜<%= schedule.end_time.strftime("%H:%M") %>', event)"
-              data-id="<%= schedule.id %>">
+               <%# 引数を4つ（title, time, content, event）に増やします %>
+               onclick="showDetail('<%= j schedule.title %>', '<%= schedule.start_time.strftime("%H:%M") %>〜<%= schedule.end_time.strftime("%H:%M") %>', '<%= j schedule.content %>', event)"
+               data-id="<%= schedule.id %>">
             <span class="schedule-title"><%= schedule.title %></span>
           </div>
         </div>
@@ -50,14 +51,17 @@
     </div>
   </div>
 
-  <%# 下3分の1の詳細ウィンドウ %>
+  <%# 下3分の1の詳細ウィンドウ（1つだけに整理） %>
   <div id="bottom-sheet" class="bottom-sheet">
     <div class="sheet-handle" onclick="hideDetail()"></div>
     <div class="sheet-content">
-      <h3 id="sheet-title">予定の詳細</h3>
-      <p id="sheet-time"></p>
-      <div class="sheet-footer">
-        <button onclick="hideDetail()" class="btn-close">閉じる</button>
+      <div class="sheet-header">
+        <h3 id="sheet-title"></h3>
+        <div id="sheet-time" style="color: #6c5ce7; font-weight: 600; margin-bottom: 10px;"></div>
+      </div>
+    
+      <div class="sheet-body">
+        <div id="sheet-content" class="sheet-memo" style="white-space: pre-wrap; color: #636e72;"></div>
       </div>
     </div>
   </div>
