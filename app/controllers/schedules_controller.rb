@@ -37,7 +37,7 @@ class SchedulesController < ApplicationController
     begin
       @date = Date.parse(params[:id])
       @schedules = current_user.schedules.where(start_time: @date.all_day)
-    rescue Date::Error
+    rescue Date::Error, TypeError
       redirect_to schedules_path, alert: "有効な日付ではありません"
     end
   end
@@ -54,8 +54,9 @@ class SchedulesController < ApplicationController
   end
 
   def destroy
+    deleted_date = @schedule.start_time.to_date.to_s
     @schedule.destroy
-    redirect_to calendar_schedules_path
+    redirect_to schedule_path(deleted_date)
   end
 
   private
