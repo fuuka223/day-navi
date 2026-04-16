@@ -35,11 +35,10 @@ window.hideDetail = function() {
   }
 };
 
-// ---新規予定作成（タイムラインの背景クリック）---
+// ---新規予定作成（タイムラインの背景クリック---
 window.createNewSchedule = function(event) {
   if (event.target.closest('.swipe-content') || event.target.closest('.swipe-actions')) return;
 
-  // 表示中の日付を取得
   const timeline = document.getElementById('timeline');
   const displayDate = timeline.getAttribute('data-date'); 
 
@@ -52,11 +51,10 @@ window.createNewSchedule = function(event) {
   
   hideDetail();
   
-  // URLにパラメータを追加
   window.location.href = `/schedules/new?date=${displayDate}&start_time=${startHour}:00&end_time=${endHour}:00`;
 };
 
-// --- スワイプ処理の関数定義 ---
+// ---スワイプ処理の関数定義---
 const startSwipe = (e) => {
   const content = e.target.closest('.swipe-content');
   if (!content) return;
@@ -71,7 +69,7 @@ const moveSwipe = (e) => {
   let change = content.startX - currentX;
 
   if (change > 50) {
-    content.style.transform = 'translateX(-120px)';
+    content.style.transform = 'translateX(-100px)';
   } else if (change < -50) {
     content.style.transform = 'translateX(0)';
   }
@@ -95,7 +93,7 @@ const setupTimePicker = () => {
   });
 };
 
-// --- イベントの個別登録 ---
+// ---イベントの登録---
 document.addEventListener("mousedown", (e) => startSwipe(e));
 document.addEventListener("mousemove", (e) => moveSwipe(e));
 document.addEventListener("mouseup", (e) => endSwipe(e));
@@ -104,8 +102,6 @@ document.addEventListener("touchstart", (e) => startSwipe(e), { passive: true })
 document.addEventListener("touchmove", (e) => moveSwipe(e), { passive: true });
 document.addEventListener("touchend", (e) => endSwipe(e));
 
-// Turboでの読み込み確認
 document.addEventListener("turbo:load", () => {
-  console.log("Timeline JS loaded and Turbo ready!");
   setupTimePicker();
 });

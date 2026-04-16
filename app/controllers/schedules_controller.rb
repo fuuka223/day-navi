@@ -35,11 +35,18 @@ class SchedulesController < ApplicationController
 
   def show
     begin
-      @date = Date.parse(params[:id])
-      @schedules = current_user.schedules.where(start_time: @date.all_day)
-    rescue Date::Error, TypeError
-      redirect_to schedules_path, alert: "有効な日付ではありません"
+    @date = Date.parse(params[:id])
+    @schedules = current_user.schedules.where(start_time: @date.all_day)
+    # 今日から3日間以内か判定
+    is_within_3_days = @date >= Date.today && @date <= Date.today + 2.days
+    if is_within_3_days && current_user.city.present?
+      weather_data = WeatherService.fetch_weather(current_user.city)
+      # 3時間ごとの予報をハッシュ化して取得
+      @hourly_forecasts = parse_hourly_weather(weather_data, @date) if weather_data
     end
+  rescue Date::Error, TypeError
+    redirect_to schedules_path, alert: "有効な日付ではありません"
+  end
   end
 
   def edit
@@ -66,17 +73,14 @@ class SchedulesController < ApplicationController
   end
 
   def combine_date_and_time(params)
-  return params unless params[:start_date].present?
+    return params unless params[:start_date].present?
+    date = params[:start_date]
+    params[:start_time] = Time.zone.parse("#{date} #{params[:start_time]}")
+    params[:end_time] = Time.zone.parse("#{date} #{params[:end_time]}")
+    params.delete(:start_date) 
+    params
+  end
 
-  date = params[:start_date]
-  
-  params[:start_time] = Time.zone.parse("#{date} #{params[:start_time]}")
-  params[:end_time] = Time.zone.parse("#{date} #{params[:end_time]}")
-
-  params.delete(:start_date) 
-  
-  params
-end
   def set_schedule
     @schedule = current_user.schedules.find(params[:id])
   end
@@ -91,6 +95,23 @@ end
       description: f['weather'][0]['description'],
       icon: f['weather'][0]['icon']
     }
+    end
+    forecasts
+  end
+
+  def parse_hourly_weather(data, target_date)
+    forecasts = []
+    # APIの3時間おきのデータをループ
+    data['list'].each do |f|
+      dt = Time.at(f['dt']).in_time_zone('Tokyo')
+      next unless dt.to_date == target_date
+      forecasts << {
+        start_hour: dt.hour,
+        end_hour: dt.hour + 3,
+        icon: f['weather'][0]['icon'],
+        temp: f['main']['temp'].round,
+        condition: f['weather'][0]['main']
+      }
     end
     forecasts
   end

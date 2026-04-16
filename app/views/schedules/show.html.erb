@@ -7,18 +7,32 @@
     <%= link_to 'カレンダーに戻る', schedules_path, class: "btn-back" %>
   </div>
 
-  <div class="timeline-wrapper" id="timeline" data-date="<%= @date.to_s %>">
-    <%# 背景のメモリ %>
-    <div class="timeline-grid" onclick="createNewSchedule(event)">
-      <% (0..24).each do |hour| %>
-        <div class="grid-row" style="top: <%= hour * 60 %>px;" data-hour="<%= hour %>">
-          <div class="grid-time"><%= sprintf("%02d:00", hour) %></div>
-          <div class="grid-line"></div>
-        </div>
-      <% end %>
-    </div>
+  <div class="timeline-grid" id="timeline" data-date="<%= @date.to_s %>" onclick="createNewSchedule(event)">
+    
+    <%# 1. 天気ブロック (左端) %>
+    <% if @hourly_forecasts.present? %>
+      <div class="weather-bands">
+        <% @hourly_forecasts.each do |w| %>
+          <div class="weather-band <%= w[:condition].downcase %>" 
+               style="top: <%= w[:start_hour] * 60 %>px; height: 180px;">
+            <div class="weather-info">
+              <img src="http://openweathermap.org/img/wn/<%= w[:icon] %>.png">
+              <span class="temp"><%= w[:temp] %>°</span>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
 
-    <%# 予定の帯 %>
+    <%# 2. 時間軸 (中央) %>
+    <% (0..23).each do |hour| %>
+      <div class="hour-row">
+        <span class="hour-label"><%= hour %>:00</span>
+        <div class="hour-line"></div>
+      </div>
+    <% end %>
+
+    <%# 3. 予定の帯 (右側) %>
     <div class="schedule-overlay">
       <% @schedules.each do |schedule| %>
         <% 
@@ -26,22 +40,18 @@
           height = (schedule.end_time - schedule.start_time) / 60
         %>
         <div class="swipe-container" style="top: <%= top %>px; height: <%= height %>px;">
-          <%# スライド時に後ろから見えるボタン %>
           <div class="swipe-actions">
-            <%# 編集ボタン %>
             <%= link_to edit_schedule_path(schedule), class: 'btn-edit' do %>
               <i class="fa-solid fa-pen"></i>
             <% end %>
-            <%# 削除ボタン %>
             <%= link_to schedule_path(schedule), 
                 class: 'btn-delete',
                 data: { "turbo-method": :delete, "turbo-confirm": '本当に削除しますか？' } do %>
               <i class="fa-solid fa-trash-can"></i>
             <% end %>
           </div>
-          <%# 表に見える予定の帯 %>
-          <div class="schedule-bar-absolute swipe-content" 
-               <%# 引数を4つ（title, time, content, event）に増やします %>
+          
+          <div class="swipe-content" 
                onclick="showDetail('<%= j schedule.title %>', '<%= schedule.start_time.strftime("%H:%M") %>〜<%= schedule.end_time.strftime("%H:%M") %>', '<%= j schedule.content %>', event)"
                data-id="<%= schedule.id %>">
             <span class="schedule-title"><%= schedule.title %></span>
@@ -51,7 +61,7 @@
     </div>
   </div>
 
-  <%# 下3分の1の詳細ウィンドウ（1つだけに整理） %>
+  <%# 詳細表示ウィンドウ %>
   <div id="bottom-sheet" class="bottom-sheet">
     <div class="sheet-handle" onclick="hideDetail()"></div>
     <div class="sheet-content">
@@ -59,9 +69,8 @@
         <h3 id="sheet-title"></h3>
         <div id="sheet-time" style="color: #6c5ce7; font-weight: 600; margin-bottom: 10px;"></div>
       </div>
-    
       <div class="sheet-body">
-        <div id="sheet-content" class="sheet-memo" style="white-space: pre-wrap; color: #636e72;"></div>
+        <div id="sheet-content" class="sheet-memo"></div>
       </div>
     </div>
   </div>
