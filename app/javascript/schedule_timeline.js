@@ -1,7 +1,7 @@
 // 現在表示している予定のIDを保持する変数
 let currentActiveId = null;
 
-// --- 詳細表示の制御 ---
+// ---詳細表示の制御---
 window.showDetail = function(title, time, content, event) {
   const target = event.currentTarget;
   const scheduleId = target.getAttribute('data-id');
@@ -35,23 +35,25 @@ window.hideDetail = function() {
   }
 };
 
-// --- 新規予定作成（タイムラインの背景クリック） ---
+// ---新規予定作成（タイムラインの背景クリック）---
 window.createNewSchedule = function(event) {
   if (event.target.closest('.swipe-content') || event.target.closest('.swipe-actions')) return;
 
+  // 表示中の日付を取得
   const timeline = document.getElementById('timeline');
+  const displayDate = timeline.getAttribute('data-date'); 
+
   const rect = timeline.getBoundingClientRect();
   const y = event.clientY - rect.top;
   
-  // クリック位置から時間を計算（1時間=60px想定）
   const hour = Math.floor(y / 60);
   const startHour = String(hour).padStart(2, '0');
-  const endHour = String((hour + 1) % 24).padStart(2, '0'); // 1時間後。24時を超える場合は00時に
+  const endHour = String((hour + 1) % 24).padStart(2, '0');
   
   hideDetail();
   
-  // URLに開始時刻と終了時刻を乗せて遷移
-  window.location.href = `/schedules/new?start_time=${startHour}:00&end_time=${endHour}:00`;
+  // URLにパラメータを追加
+  window.location.href = `/schedules/new?date=${displayDate}&start_time=${startHour}:00&end_time=${endHour}:00`;
 };
 
 // --- スワイプ処理の関数定義 ---
@@ -80,6 +82,19 @@ const endSwipe = (e) => {
   if (content) content.startX = undefined;
 };
 
+const setupTimePicker = () => {
+  const timeInputs = document.querySelectorAll('.js-time-picker');
+  timeInputs.forEach(input => {
+    input.addEventListener('click', (e) => {
+      try {
+        e.target.showPicker();
+      } catch (error) {
+        e.target.focus();
+      }
+    });
+  });
+};
+
 // --- イベントの個別登録 ---
 document.addEventListener("mousedown", (e) => startSwipe(e));
 document.addEventListener("mousemove", (e) => moveSwipe(e));
@@ -89,7 +104,8 @@ document.addEventListener("touchstart", (e) => startSwipe(e), { passive: true })
 document.addEventListener("touchmove", (e) => moveSwipe(e), { passive: true });
 document.addEventListener("touchend", (e) => endSwipe(e));
 
-// Turbo環境での読み込み確認
+// Turboでの読み込み確認
 document.addEventListener("turbo:load", () => {
   console.log("Timeline JS loaded and Turbo ready!");
+  setupTimePicker();
 });

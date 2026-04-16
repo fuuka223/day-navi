@@ -7,7 +7,7 @@
     <%= link_to 'カレンダーに戻る', schedules_path, class: "btn-back" %>
   </div>
 
-  <div class="timeline-wrapper" id="timeline">
+  <div class="timeline-wrapper" id="timeline" data-date="<%= @date.to_s %>">
     <%# 背景のメモリ %>
     <div class="timeline-grid" onclick="createNewSchedule(event)">
       <% (0..24).each do |hour| %>
