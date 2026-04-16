@@ -88,6 +88,74 @@
   font-size: 0.9rem;
 }
 
+/* ---フォーム全体のレイアウト調整--- */
+.field {
+  margin-bottom: 24px;
+}
+
+.field label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #4b4b4b;
+  margin-bottom: 8px;
+}
+
+/* ---カテゴリー入力欄--- */
+#category-input {
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 1rem;
+  border: 2px solid #f1f3f5;
+  border-radius: 12px;
+  background-color: #f8f9fa;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+#category-input:focus {
+  outline: none;
+  border-color: #a29bfe;
+  background-color: #fff;
+  box-shadow: 0 0 0 4px rgba(162, 155, 254, 0.1);
+}
+
+/* ---カラーピッカーのカスタマイズ--- */
+.color-picker-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+#color-input {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 60px;
+  height: 40px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+/* カラーピッカーの中身 */
+#color-input::-webkit-color-swatch {
+  border-radius: 8px;
+  border: 2px solid #f1f3f5;
+}
+
+#color-input::-moz-color-swatch {
+  border-radius: 8px;
+  border: 2px solid #f1f3f5;
+}
+
+.hint {
+  font-size: 0.75rem;
+  color: #adb5bd;
+  margin: 0;
+}
+
 /* エラー表示 */
 .error-container {
   background-color: #fff5f5;

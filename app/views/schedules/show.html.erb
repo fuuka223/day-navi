@@ -35,26 +35,17 @@
     <%# 3. 予定の帯 (右側) %>
     <div class="schedule-overlay">
       <% @schedules.each do |schedule| %>
-        <% 
-          top = schedule.start_time.hour * 60 + schedule.start_time.min
-          height = (schedule.end_time - schedule.start_time) / 60
-        %>
-        <div class="swipe-container" style="top: <%= top %>px; height: <%= height %>px;">
+        <div class="swipe-container" style="top: <%= schedule.start_time.hour * 60 + schedule.start_time.min %>px; height: <%= (schedule.end_time - schedule.start_time) / 60 %>px;">
           <div class="swipe-actions">
-            <%= link_to edit_schedule_path(schedule), class: 'btn-edit' do %>
-              <i class="fa-solid fa-pen"></i>
-            <% end %>
-            <%= link_to schedule_path(schedule), 
-                class: 'btn-delete',
-                data: { "turbo-method": :delete, "turbo-confirm": '本当に削除しますか？' } do %>
-              <i class="fa-solid fa-trash-can"></i>
-            <% end %>
+            <%= link_to '編集', edit_schedule_path(schedule), class: 'btn-edit' %>
+            <%= link_to '削除', schedule_path(schedule), data: { turbo_method: :delete, turbo_confirm: '削除しますか？' }, class: 'btn-delete' %>
           </div>
-          
           <div class="swipe-content" 
-               onclick="showDetail('<%= j schedule.title %>', '<%= schedule.start_time.strftime("%H:%M") %>〜<%= schedule.end_time.strftime("%H:%M") %>', '<%= j schedule.content %>', event)"
-               data-id="<%= schedule.id %>">
-            <span class="schedule-title"><%= schedule.title %></span>
+                style="<%= schedule.category_color.present? ? "background: #{schedule.category_color};" : "" %>"
+                onclick="showDetail('<%= j schedule.title %>', '<%= schedule.start_time.strftime('%H:%M') %> - <%= schedule.end_time.strftime('%H:%M') %>', '<%= j schedule.content %>', '<%= j schedule.category_name %>', '<%= schedule.category_color %>', event)"
+                data-id="<%= schedule.id %>">
+          <div class="schedule-title">
+            <%= schedule.title %>
           </div>
         </div>
       <% end %>
@@ -64,14 +55,9 @@
   <%# 詳細表示ウィンドウ %>
   <div id="bottom-sheet" class="bottom-sheet">
     <div class="sheet-handle" onclick="hideDetail()"></div>
-    <div class="sheet-content">
-      <div class="sheet-header">
-        <h3 id="sheet-title"></h3>
-        <div id="sheet-time" style="color: #6c5ce7; font-weight: 600; margin-bottom: 10px;"></div>
-      </div>
-      <div class="sheet-body">
-        <div id="sheet-content" class="sheet-memo"></div>
-      </div>
-    </div>
+    <div id="sheet-category-container"></div>
+    <h2 id="sheet-title"></h2>
+    <p id="sheet-time"></p>
+    <div id="sheet-content"></div>
   </div>
 </div>

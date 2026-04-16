@@ -38,6 +38,38 @@
     </div>
   </div>
 
+  <div class="field">
+    <%= f.label :category_name, "カテゴリー" %>
+    <%= f.text_field :category_name, list: "category-list", id: "category-input", placeholder: "仕事、プライベートなど" %>
+    <datalist id="category-list">
+      <% @category_options.each do |option| %>
+        <option value="<%= option.category_name %>" data-color="<%= option.category_color %>">
+      <% end %>
+    </datalist>
+  </div>
+
+  <div class="field">
+    <%= f.label :category_color, "カテゴリーカラー" %>
+    <div class="color-picker-wrapper">
+      <%= f.color_field :category_color, id: "color-input", value: @schedule.category_color || "#6c5ce7" %>
+      <span class="hint">予定ブロックの色に反映されます</span>
+    </div>
+  </div>
+
+  <script>
+    // カテゴリー名が選択されたら、紐付いている色を自動反映させる
+    document.getElementById('category-input').addEventListener('input', function(e) {
+      const list = document.getElementById('category-list');
+      const options = list.options;
+      for (let i = 0; i < options.length; i++) {
+        if (options[i].value === e.target.value) {
+          document.getElementById('color-input').value = options[i].getAttribute('data-color');
+          break;
+        }
+      }
+    });
+  </script>
+
   <div class="form-actions">
     <%= f.submit yield(:button_text), class: "btn-submit" %>
     <%= link_to 'キャンセル', :back, class: "btn-cancel" %>

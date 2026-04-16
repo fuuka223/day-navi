@@ -168,3 +168,24 @@
   border-radius: 3px;
   cursor: pointer;
 }
+
+.category-tag {
+  font-size: 0.6rem;
+  margin-right: 4px;
+  opacity: 0.9;
+}
+
+.sheet-category-tag {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 12px;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+#sheet-category-container {
+  margin-top: 8px;
+  display: flex;
+}

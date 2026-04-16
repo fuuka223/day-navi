@@ -2,7 +2,7 @@
 let currentActiveId = null;
 
 // ---詳細表示の制御---
-window.showDetail = function(title, time, content, event) {
+window.showDetail = function(title, time, content, catName, catColor, event) {
   const target = event.currentTarget;
   const scheduleId = target.getAttribute('data-id');
   const sheet = document.getElementById('bottom-sheet');
@@ -16,10 +16,14 @@ window.showDetail = function(title, time, content, event) {
     // 中身を書き換えて表示
     document.getElementById('sheet-title').innerText = title;
     document.getElementById('sheet-time').innerText = time;
-    
-    const contentElement = document.getElementById('sheet-content');
-    if (contentElement) {
-      contentElement.innerText = content || "詳細な内容はありません。";
+    document.getElementById('sheet-content').innerText = content || "詳細な内容はありません。";
+    // カテゴリー表示の制御
+    const catContainer = document.getElementById('sheet-category-container');
+    if (catName && catName !== "") {
+      catContainer.style.display = "flex";
+      catContainer.innerHTML = `<span class="sheet-category-tag" style="background: ${catColor}">${catName}</span>`;
+    } else {
+      catContainer.style.display = "none";
     }
     
     sheet.classList.add('show');
