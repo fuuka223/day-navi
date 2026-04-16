@@ -25,7 +25,7 @@ class SchedulesController < ApplicationController
   end
 
   def create
-    @schedule = current_user.schedules.new(schedule_params)
+    @schedule = current_user.schedules.new(combine_date_and_time(schedule_params))
     if @schedule.save
       redirect_to schedule_path(@schedule.start_time.to_date.to_s)
     else
@@ -46,7 +46,7 @@ class SchedulesController < ApplicationController
   end
 
   def update
-    if @schedule.update(schedule_params)
+    if @schedule.update(combine_date_and_time(schedule_params))
       redirect_to schedule_path(@schedule.start_time.to_date.to_s)
     else
       render :edit, status: :unprocessable_entity
@@ -61,9 +61,21 @@ class SchedulesController < ApplicationController
   private
 
   def schedule_params
-    params.require(:schedule).permit(:title, :content, :start_time, :end_time)
+    params.require(:schedule).permit(:title, :content, :start_time, :end_time, :start_date)
   end
 
+  def combine_date_and_time(params)
+  return params unless params[:start_date].present?
+
+  date = params[:start_date]
+  
+  params[:start_time] = Time.zone.parse("#{date} #{params[:start_time]}")
+  params[:end_time] = Time.zone.parse("#{date} #{params[:end_time]}")
+
+  params.delete(:start_date) 
+  
+  params
+end
   def set_schedule
     @schedule = current_user.schedules.find(params[:id])
   end
