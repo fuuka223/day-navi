@@ -27,7 +27,7 @@ class SchedulesController < ApplicationController
   def create
     @schedule = current_user.schedules.new(schedule_params)
     if @schedule.save
-      redirect_to calendar_schedules_path
+      redirect_to schedule_path(@schedule.start_time.to_date.to_s)
     else
       render :new, status: :unprocessable_entity
     end
@@ -47,7 +47,7 @@ class SchedulesController < ApplicationController
 
   def update
     if @schedule.update(schedule_params)
-      redirect_to schedule_path(@schedule)
+      redirect_to schedule_path(@schedule.start_time.to_date.to_s)
     else
       render :edit, status: :unprocessable_entity
     end
