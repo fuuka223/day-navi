@@ -51,12 +51,12 @@
   <div class="field">
     <%= f.label :category_color, "カテゴリーカラー" %>
     <div class="color-picker-wrapper">
-      <%= f.color_field :category_color, id: "color-input", value: @schedule.category_color || "#6c5ce7" %>
+      <%= f.color_field :category_color, id: "color-input", value: @schedule.category_color || "#cacaca" %>
       <span class="hint">予定ブロックの色に反映されます</span>
     </div>
   </div>
 
-  <script>
+  <%# <script>
     // カテゴリー名が選択されたら、紐付いている色を自動反映させる
     document.getElementById('category-input').addEventListener('input', function(e) {
       const list = document.getElementById('category-list');
@@ -68,7 +68,7 @@
         }
       }
     });
-  </script>
+  </script> %>
 
   <div class="form-actions">
     <%= f.submit yield(:button_text), class: "btn-submit" %>

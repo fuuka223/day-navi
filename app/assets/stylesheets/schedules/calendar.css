@@ -1,3 +1,45 @@
+/* ---1.カレンダー全体のレイアウト固定--- */
+.simple-calendar {
+  width: 100%;
+  border-collapse: collapse !important;
+  table-layout: fixed !important; /* 幅を1/7に固定 */
+  background-color: white;
+}
+.simple-calendar td {
+  max-width: 0;
+}
+
+/* 曜日のヘッダー */
+.simple-calendar thead th {
+  padding: 10px;
+  background-color: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  text-align: center;
+  width: 14.28% !important;
+}
+
+/* 日付セル */
+.simple-calendar td {
+  border: 1px solid #e0e0e0 !important;
+  height: 120px !important;
+  width: 14.28% !important;
+  vertical-align: top !important;
+  padding: 0 !important;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 日付全体をクリック可能に */
+.calendar-day-link {
+  display: block;
+  height: 100%;
+  padding: 5px;
+  text-decoration: none;
+  color: inherit;
+  transition: background-color 0.2s;
+}
+
+/* ---2.カレンダーヘッダー--- */
 .calendar-heading {
   display: flex;
   align-items: center;
@@ -7,7 +49,6 @@
   border-bottom: 1px solid #f0f0f0;
 }
 
-/* 年 */
 .calendar-year {
   font-family: "Inter", sans-serif;
   font-size: 0.85rem;
@@ -17,7 +58,6 @@
   letter-spacing: 0.1em;
 }
 
-/* 月 */
 .calendar-month {
   font-family: "Hiragino Sans", sans-serif;
   font-size: 2.4rem;
@@ -25,120 +65,70 @@
   color: lightblue;
 }
 
-/* 矢印 */
 .nav-btn {
   font-size: 1.8rem;
   color: #bdc3c7;
+  text-decoration: none;
   transition: color 0.2s;
-  font-weight: 200;
 }
 
-.nav-btn:hover {
-  color: #2d3436;
-}
+.nav-btn:hover { color: #2d3436; }
 
-/* カレンダーの見た目 */
-.simple-calendar {
-  border-collapse: collapse;
+/* ---3.予定の表示--- */
+.calendar-events-container {
   width: 100%;
-  background-color: white;
-  table-layout: fixed;
+  display: block;
+  height: 85px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  margin-top: 2px;
+  white-space: nowrap;
+  position: relative;
+  z-index: 2;
 }
 
-/* 曜日のヘッダー部分を強制的に整える */
-.simple-calendar thead th {
-  padding: 10px;
-  background-color: #f8f9fa;
-  border: 1px solid #e0e0e0;
-  text-align: center;
-}
-
-/* 曜日がバラバラにならないようにする設定 */
-.simple-calendar .day-names span {
+.calendar-events-container::-webkit-scrollbar {
   display: none;
 }
 
-/* 曜日のヘッダー */
-.simple-calendar td {
-  border: 1px solid #e0e0e0;
-  padding: 5px;
-  height: 100px;
-  vertical-align: top;
-  position: relative;
-}
-
-/* カレンダーのテーブル全体の形を固定する */
-.simple-calendar table {
-  border-collapse: collapse !important;
-  width: 100% !important;
-  table-layout: fixed !important; 
-}
-
-/* 曜日と日付両方の幅を1/7に固定 */
-.simple-calendar thead th,
-.simple-calendar td {
-  width: 14.28% !important;
-  word-wrap: break-word;
+.calendar-event-link {
+  display: block;
+  width: 100%;
+  text-decoration: none;
+  font-size: 0.7rem;
+  color: white !important;
+  padding: 2,0;
+  margin-bottom: 2px;
+  border-radius: 4px;
+  white-space: nowrap;
   overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 500;
+  line-height: 1.4;
 }
 
-/* 日付の高さと配置 */
-.simple-calendar td {
-  height: 100px !important;
-  vertical-align: top !important;
-  padding: 5px !important;
-  border: 1px solid #e0e0e0 !important;
+.calendar-event-link.default-color {
+  background-color: #acacac;
 }
 
-/* 天気アイコンをうっすら透けさせる設定 */
+/* ---4.その他（天気・日付数字）--- */
+.day-number {
+  position: relative;
+  z-index: 1;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
 .weather-overlay {
   position: absolute;
-  top: -10px;
+  top: -5px;
   right: -5px;
   z-index: 0;
 }
 
 .weather-icon {
-  width: 40px;
-  height: 40px;
+  width: 35px;
+  height: 35px;
   opacity: 0.5;
-}
-
-/* カレンダー内の要素が重ならないための調整 */
-.day-number {
-  position: relative;
-  z-index: 1;
-  font-weight: bold;
-  text-decoration: none;
-  color: #333;
-}
-
-.schedule-list {
-  position: relative;
-  z-index: 1;
-  margin-top: 5px;
-}
-
-  .schedule-item {
-    font-size: 0.8rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-.calendar-day-link {
-  display: block;
-  height: 100%;
-  text-decoration: none;
-  color: inherit;
-  transition: background-color 0.2s;
-}
-
-.simple-calendar td {
-  padding: 0 !important; 
-}
-
-.calendar-day {
-  padding: 5px;
-  height: 100%;
 }

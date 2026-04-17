@@ -37,15 +37,20 @@
       <% @schedules.each do |schedule| %>
         <div class="swipe-container" style="top: <%= schedule.start_time.hour * 60 + schedule.start_time.min %>px; height: <%= (schedule.end_time - schedule.start_time) / 60 %>px;">
           <div class="swipe-actions">
-            <%= link_to '編集', edit_schedule_path(schedule), class: 'btn-edit' %>
-            <%= link_to '削除', schedule_path(schedule), data: { turbo_method: :delete, turbo_confirm: '削除しますか？' }, class: 'btn-delete' %>
+            <%= link_to edit_schedule_path(schedule), class: 'btn-edit' do %>
+              <i class="fa-solid fa-pen"></i> 
+            <% end %>
+            <%= link_to schedule_path(schedule), data: { turbo_method: :delete, turbo_confirm: '削除しますか？' }, class: 'btn-delete' do %>
+              <i class="fa-solid fa-trash"></i> 
+            <% end %>
           </div>
           <div class="swipe-content" 
                 style="<%= schedule.category_color.present? ? "background: #{schedule.category_color};" : "" %>"
                 onclick="showDetail('<%= j schedule.title %>', '<%= schedule.start_time.strftime('%H:%M') %> - <%= schedule.end_time.strftime('%H:%M') %>', '<%= j schedule.content %>', '<%= j schedule.category_name %>', '<%= schedule.category_color %>', event)"
                 data-id="<%= schedule.id %>">
-          <div class="schedule-title">
-            <%= schedule.title %>
+            <div class="schedule-title">
+              <%= schedule.title %>
+            </div>
           </div>
         </div>
       <% end %>
