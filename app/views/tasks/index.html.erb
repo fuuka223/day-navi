@@ -16,8 +16,9 @@
         <h2><%= panel[:label] %></h2>
         <div class="task-list">
           <%# 優先度と一致するタスクを抽出 %>
-          <% @tasks.select { |t| t.priority_level_before_type_cast == i }.each do |task| %>
-            <div class="task-card" 
+          <% @tasks.select { |t| t.priority_level_before_type_cast == (i + 1)}.each do |task| %>
+            <div class="task-card is-clickable" 
+                 data-url="<%= task_path(task) %>"
                  data-completed="<%= task.is_completed %>"
                  data-overdue="<%= task.deadline.present? && task.deadline < Time.current && !task.is_completed %>">
               

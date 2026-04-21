@@ -9,33 +9,21 @@
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   </head>
 
   <body>
+    <%= render 'shared/top_sheet' %>
 
-  <header class="main-header">
-      <div class="header-logo">
-        <%= link_to 'Day-Navi', root_path %>
-      </div>
-      <nav class="header-nav">
-        <% if user_signed_in? %>
-          <%# ログインしている場合 %>
-          <span class="user-name">こんにちは、<%= current_user.name %>さん</span>
-          <%= link_to "ログアウト", destroy_user_session_path, data: { turbo_method: :delete }, class: "nav-link" %>
-        <% else %>
-          <%# ログインしていない場合 %>
-          <%= link_to "新規登録", new_user_registration_path, class: "nav-link" %>
-          <%= link_to "ログイン", new_user_session_path, class: "nav-link" %>
-        <% end %>
-      </nav>
-    </header>
-
-    <%# 通知メッセージの表示エリア %>
     <div class="flash-messages">
-      <p class="notice"><%= notice %></p>
-      <p class="alert"><%= alert %></p>
+      <% if notice %><p class="notice"><%= notice %></p><% end %>
+      <% if alert %><p class="alert"><%= alert %></p><% end %>
     </div>
 
-    <%= yield %>
+    <main class="main-content">
+      <%= yield %>
+    </main>
+
+    <%= render 'shared/bottom_sheet' %> 
   </body>
 </html>

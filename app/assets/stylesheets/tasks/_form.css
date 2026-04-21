@@ -6,6 +6,7 @@
   border-radius: 25px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
   transition: transform 0.3s ease;
+  width: 95vw;
 }
 
 /* 優先度の色を示す縦棒 */

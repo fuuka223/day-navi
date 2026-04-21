@@ -20,6 +20,20 @@ document.addEventListener("turbo:load", () => {
     
   });
 
+  document.querySelectorAll('.task-card.is-clickable').forEach(card => {
+    card.addEventListener('click', (e) => {
+      // ボタンやリンクそのものをクリックした場合は、そちらの動作を優先する
+      if (e.target.closest('.status-btn') || e.target.closest('a')) {
+        return;
+      }
+      // それ以外（カードの余白など）をクリックしたら遷移
+      const url = card.dataset.url;
+      if (url) {
+        Turbo.visit(url);
+      }
+    });
+  });
+
   // 2. ホバーエフェクト
   container.addEventListener("mouseover", (e) => {
     const card = e.target.closest(".task-card");

@@ -1,42 +1,68 @@
-<div class="schedule-details">
-  <h2><%= @selected_date.strftime("%Y年%m月%d日") %> の予定一覧</h2>
-
-  <div class="schedule-actions">
-    <%= link_to 'この日に予定を追加', new_schedule_path(start_date: @selected_date) %>
-    |
-    <%= link_to 'カレンダーに戻る', calendar_schedules_path %>
+<div class="schedule-detail-container">
+  <div class="detail-header">
+    <div class="header-left">
+      <small class="calendar-year"><%= @date.year %>年</small>
+      <strong class="calendar-month"><%= @date.month %>月<%= @date.day %>日</strong>
+    </div>
+    <%= link_to 'カレンダーに戻る', schedules_path, class: "btn-back" %>
   </div>
 
-  <hr>
-
-  <div class="schedule-list">
-    <% if @schedules.any? %>
-      <% @schedules.each do |schedule| %>
-        <div class="schedule-card">
-          <h3><%= schedule.title %></h3>
-          
-          <p>
-            <strong>時間:</strong>
-            <%= schedule.start_time.strftime("%H:%M") %> 〜 
-            <%= schedule.end_time.strftime("%H:%M") if schedule.end_time %>
-          </p>
-
-          <p>
-            <strong>内容:</strong><br>
-            <%= simple_format(schedule.content) %>
-          </p>
-
-          <div class="item-actions">
-            <%= link_to '編集', edit_schedule_path(schedule) %>
-            |
-            <%= link_to '削除', schedule_path(schedule), 
-                        data: { turbo_method: :delete, turbo_confirm: '本当に削除しますか？' } %>
+  <div class="timeline-grid" id="timeline" data-date="<%= @date.to_s %>" onclick="createNewSchedule(event)">
+    
+    <%# 1. 天気ブロック (左端) %>
+    <% if @hourly_forecasts.present? %>
+      <div class="weather-bands">
+        <% @hourly_forecasts.each do |w| %>
+          <div class="weather-band <%= w[:condition].downcase %>" 
+               style="top: <%= w[:start_hour] * 60 %>px; height: 180px;">
+            <div class="weather-info">
+              <img src="http://openweathermap.org/img/wn/<%= w[:icon] %>.png">
+              <span class="temp"><%= w[:temp] %>°</span>
+            </div>
           </div>
-          <hr>
+        <% end %>
+      </div>
+    <% end %>
+
+    <%# 2. 時間軸 (中央) %>
+    <% (0..23).each do |hour| %>
+      <div class="hour-row">
+        <span class="hour-label"><%= hour %>:00</span>
+        <div class="hour-line"></div>
+      </div>
+    <% end %>
+
+    <%# 3. 予定の帯 (右側) %>
+    <div class="schedule-overlay">
+      <% @schedules.each do |schedule| %>
+        <div class="swipe-container" style="top: <%= schedule.start_time.hour * 60 + schedule.start_time.min %>px; height: <%= (schedule.end_time - schedule.start_time) / 60 %>px;">
+          <div class="swipe-actions">
+            <%= link_to edit_schedule_path(schedule), class: 'btn-edit' do %>
+              <i class="fa-solid fa-pen"></i> 
+            <% end %>
+            <%= link_to schedule_path(schedule), data: { turbo_method: :delete, turbo_confirm: '削除しますか？' }, class: 'btn-delete' do %>
+              <i class="fa-solid fa-trash"></i> 
+            <% end %>
+          </div>
+          <div class="swipe-content" 
+                style="<%= schedule.category_color.present? ? "background: #{schedule.category_color};" : "" %>"
+                onclick="showDetail('<%= j schedule.title %>', '<%= schedule.start_time.strftime('%H:%M') %> - <%= schedule.end_time.strftime('%H:%M') %>', '<%= j schedule.content %>', '<%= j schedule.category_name %>', '<%= schedule.category_color %>', event)"
+                data-id="<%= schedule.id %>">
+            <div class="schedule-title">
+              <%= schedule.title %>
+            </div>
+          </div>
         </div>
       <% end %>
-    <% else %>
-      <p>この日の予定はありません。</p>
-    <% end %>
+    </div>
+  </div>
+
+  <%# 詳細表示ウィンドウ %>
+  <div id="bottom-sheet" class="bottom-sheet">
+    <div class="sheet-handle" onclick="hideDetail()"></div>
+    <div id="sheet-category-container"></div>
+    <h2 id="sheet-title"></h2>
+    <p id="sheet-time"></p>
+    <div id="sheet-content"></div>
   </div>
 </div>

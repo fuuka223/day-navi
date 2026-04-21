@@ -30,7 +30,7 @@
     <%= f.label :priority_level, "優先度" %>
     <div class="select-wrapper">
       <%= f.select :priority_level, 
-          [["重要・緊急", "重要・緊急"], ["重要・非緊急", "重要・非緊急"], ["非重要・緊急", "非重要・緊急"], ["非重要・非緊急", "非重要・非緊急"]], 
+          [["重要・緊急", 1 ], ["重要・非緊急", 2 ], ["非重要・緊急", 3 ], ["非重要・非緊急", 4 ]], 
           { include_blank: "--- 選択してください ---" },
           { class: "form-input js-priority-select" } %>
     </div>

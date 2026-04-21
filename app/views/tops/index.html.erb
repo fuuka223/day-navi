@@ -1,82 +1,144 @@
-<% if user_signed_in? %>
-  <h2>こんにちは、<%= current_user.name %> さん</h2>
-
-  <div>
-    <%= link_to "新しいタスクを追加", new_task_path %> |
-    <%= link_to "タスク一覧詳細へ", tasks_path %>
-    <%= link_to "カレンダーを確認", calendar_schedules_path %>
-  </div>
-
-  <hr>
-
-  <%# ---タスク状況--- %>
-
-  <h3>現在のタスク状況</h3>
-
-  <div>
-    <% if @tasks.any? %>
-      <% @tasks.each do |task| %>
-        <%# 期限切れ判定 %>
-        <% is_overdue = task.deadline.present? && task.deadline < Time.current && !task.is_completed %>
-        
-        <div style="border: 1px solid #ccc; margin-bottom: 10px; padding: 10px; display: flex; align-items: center;">
-          
-          <div style="margin-right: 10px;">
-            <%= button_to task.is_completed ? "✅" : "⬜️", 
-                          toggle_status_task_path(task), 
-                          method: :patch %>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div class="weather-task-container">
+      <% display_date = @forecasts.key?(Date.today) ? Date.today : @forecasts.keys.first %>
+      <% if @forecasts && @forecasts[display_date] %>
+        <div class="weather-info-block">
+          <p><%= display_date == Date.today ? "今日の天気" : "明日の天気" %></p>
+          <div class="weather-icon-wrap">
+            <%= image_tag "https://openweathermap.org/img/wn/#{@forecasts[display_date][:icon]}@2x.png", 
+                      alt: @forecasts[display_date][:description] %>
           </div>
-
-          <%= link_to task_path(task) do %>
-            <span style="<%= 'text-decoration: line-through;' if task.is_completed %> <%= 'color: red;' if is_overdue %>">
-              <%= task.title %>
-            </span>
-            
-            <% if task.deadline.present? %>
-              <small>
-                <% remaining_days = (task.deadline.to_date - Date.current).to_i %>
-                <% if is_overdue %>
-                  (期限切れ)
-                <% elsif remaining_days == 0 %>
-                  (今日まで！)
-                <% else %>
-                  (あと <%= remaining_days %> 日)
-                <% end %>
-              </small>
-            <% end %>
-          <% end %>
+          <div class="weather-info">
+            <span class="weather-temp"><%= @forecasts[display_date][:temp] %>°</span>
+            <div>
+              <span class="weather-temp_min"><%= @forecasts[display_date][:temp_min] %>°</span>
+              /
+              <span class="weather-temp_max"><%= @forecasts[display_date][:temp_max] %>°</span>
+            </div>
+            <div>
+              <span class="weather-pop">💧<%= @forecasts[display_date][:pop] %>%</span>
+              <span class="weather-wind">🍃<%= @forecasts[display_date][:wind] %>m</span>
+            </div>
+          </div>
         </div>
+      <% else %>
+        <p>天気データがありません</p>
       <% end %>
-    <% else %>
-      <p>現在登録されているタスクはありません。</p>
-    <% end %>
-  </div>
 
-  <hr>
 
-  <%# ---今日の予定--- %>
-  
-  <h3>今日の予定</h3>
-  <div>
-    <% if @today_schedules.any? %>
-      <div style="background-color: #f9f9f9; padding: 10px; border-radius: 5px; margin-bottom: 20px;">
-        <% @today_schedules.each do |schedule| %>
-          <div style="margin-bottom: 5px;">
-            <strong><%= schedule.start_time.strftime("%H:%M") %></strong> : 
-            <%= link_to schedule.title, schedule_path(Date.today) %>
+      <% matrix_definition = [
+        { label: "重要・緊急", css: "important urgent" },
+        { label: "重要・非緊急", css: "important not-urgent" },
+        { label: "非重要・緊急", css: "not-important urgent" },
+        { label: "非重要・非緊急", css: "not-important not-urgent" }
+      ] %>
+
+      <div class="top-task-matrix">
+        <% matrix_definition.each_with_index do |panel, i| %>
+          <% target_level = i + 1 %>
+          <% count = @task_counts_by_index[target_level] || 0 %>
+          <div class="matrix-panel <%= panel[:css] %> <%= 'has-tasks' if count > 0 %>">
+            <span class="panel-label"><%= panel[:label].split('・').last %></span>
+            <span class="panel-count"><%= count %></span>
           </div>
         <% end %>
-        <%= link_to "今日の予定を詳しく見る", schedule_path(Date.today), style: "font-size: 0.8rem;" %>
       </div>
-    <% else %>
-      <p>今日の予定はありません。</p>
-    <% end %>
-  </div>
+    </div>
 
+    <div class="header-card">
+      <div class="weather-alert">
+          <% if @rain_time %>
+              <div class="alert-box">
+                <span class="icon">☂️</span>
+                <span class="message">
+                  <% if @rain_time.today? %>
+                    <strong>今日 <%= l @rain_time, format: "%H:%M" %></strong> 頃から雨の予報です
+                  <% elsif @rain_time.tomorrow? %>
+                    <strong>明日 <%= l @rain_time, format: "%H:%M" %></strong> 頃から雨になりそうです
+                  <% else %>
+                    <strong><%= l @rain_time, format: "%m/%d" %></strong> まで雨の心配はなさそうです
+                 <% end %>
+                </span>
+              </div>
+            <% else %>
+              <div class="alert-box clean">
+                <span class="icon">☀️</span>
+                <span class="message">しばらく雨の心配はありません</span>
+              </div>
+            <% end %>
+          </div>
 
-<% else %>
-  <h2>Day-Naviへようこそ</h2>
-  <p>ご利用にはログインが必要です。</p>
-  <%= link_to "新規登録", new_user_registration_path %> |
-  <%= link_to "ログイン", new_user_session_path %>
-<% end %>
+            <%# <strong>出発を15分早めるのがおすすめです！</strong> %>
+          </div>
+          
+          <div id="countdown-display" class="next-schedule-container" data-schedules="<%= @schedules.to_json %>">
+            <% if @next_schedule %>
+              <div class="countdown-card">
+                <p class="next-label">次の予定まで</p>
+                <div id="countdown-timer" class="timer">--:--:--</div>
+                <p id="next-schedule-title" class="next-title">
+                  予定を確認中...
+                </p>
+              </div>
+            <% else %>
+              <div class="countdown-card">
+                <p>今日の予定は終了しました</p>
+              </div>
+            <% end %>
+          </div>
+    </div>
+
+    <div class="timeline-wrapper">
+      <div class="timeline-grid" id="timeline" data-date="<%= @date.to_s %>">
+        <%# 1. 現在時刻を示す赤いライン %>
+        <div id="current-time-line" class="current-time-line"></div>
+        <%# 2. 天気ブロック %>
+        <% if @hourly_forecasts.present? %>
+          <div class="weather-bands">
+            <% @hourly_forecasts.each do |w| %>
+              <div class="weather-band <%= w[:condition].downcase %>" 
+                   style="top: <%= w[:start_hour] * 60 %>px;">
+                <div class="weather-info">
+                  <img src="https://openweathermap.org/img/wn/<%= w[:icon] %>.png">
+                  <span class="temp"><%= w[:temp] %>°</span>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+        <%# 3. 時間軸 %>
+        <div class="hour-layers">
+          <% (0..23).each do |hour| %>
+            <div class="hour-row">
+              <span class="hour-label"><%= hour %>:00</span>
+            </div>
+          <% end %>
+        </div>
+        <%# 4. 予定の帯 %>
+        <div class="schedule-overlay">
+          <% @schedules.each do |schedule| %>
+            <% top_pos = schedule.start_time.hour * 60 + schedule.start_time.min %>
+            <% height = (schedule.end_time - schedule.start_time) / 60 %>
+        
+            <div class="schedule-block" 
+                style="top: <%= top_pos %>px; height: <%= height %>px; <%= "background: #{schedule.category_color};" if schedule.category_color.present? %>"
+                onclick="showDetail('<%= j schedule.title %>', '<%= schedule.start_time.strftime('%H:%M') %> - <%= schedule.end_time.strftime('%H:%M') %>', '<%= j schedule.content %>', '<%= j schedule.category_name %>', '<%= schedule.category_color %>', event)">
+              <div class="schedule-title">
+                <%= schedule.title %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <%= render "shared/bottom_sheet" %>
+
+  </body>
+</html>

@@ -5,27 +5,27 @@
   </div>
 
   <%= month_calendar(events: @schedules) do |date, schedules| %>
-  <%= link_to schedule_path(date), class: "calendar-day-link" do %>
-    <div class="calendar-day">
-      <div class="day-header" style="position: relative;">
-        <span class="day-number"><%= date.day %></span>
-        
-        <% if @forecasts && @forecasts[date] %>
-          <div class="weather-overlay" title="<%= @forecasts[date][:description] %>">
-            <%= image_tag "https://openweathermap.org/img/wn/#{@forecasts[date][:icon]}@2x.png", 
-                          alt: @forecasts[date][:description],
-                          class: "weather-icon" %>
-          </div>
-        <% end %>
+    <%= link_to schedule_path(id: date.to_s), class: "calendar-day-link" do %>
+      <div class="calendar-day-number">
+        <%= date.day %>
       </div>
-
-      <div class="schedule-list">
+      <% if @forecasts && @forecasts[date] %>
+        <div class="weather-overlay" title="<%= @forecasts[date][:description] %>">
+          <%= image_tag "https://openweathermap.org/img/wn/#{@forecasts[date][:icon]}@2x.png", 
+                        alt: @forecasts[date][:description],
+                        class: "weather-icon" %>
+        </div>
+      <% end %>
+      </div>
+      <div class="calendar-events-container">
         <% schedules.each do |schedule| %>
-          <div class="schedule-item">
-            <small>●</small> <%= schedule.title.truncate(10) %>
-          </div>
+          <%# カテゴリーカラーがあれば背景に適用、なければデフォルトクラスを付与 %>
+          <div class="calendar-event-link <%= 'default-color' if schedule.category_color.blank? %>" 
+             style="<%= "background-color: #{schedule.category_color};" if schedule.category_color.present? %>">
+          <%= schedule.title %>
+        </div>
         <% end %>
       </div>
-    </div>
+    <% end %>
   <% end %>
-<% end %>
+</div>
