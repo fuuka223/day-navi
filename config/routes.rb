@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'users/show'
+  get 'users/update'
   get 'schedules/index'
   get 'schedules/calendar'
   get 'schedules/new'
@@ -28,4 +30,5 @@ Rails.application.routes.draw do
       get 'calendar'
     end
   end
+  resources :users, only: [:show, :update]
 end
