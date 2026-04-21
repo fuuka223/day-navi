@@ -1,0 +1,25 @@
+<nav class="bottom-nav">
+  <%# 1. タスク一覧 %>
+  <%= link_to tasks_path, class: "nav-item" do %>
+    <i class="fa-solid fa-list-check"></i>
+    <span>タスク</span>
+  <% end %>
+
+  <%# 2. 月間カレンダー %>
+  <%= link_to schedules_calendar_path, class: "nav-item" do %>
+    <i class="fa-solid fa-calendar-days"></i>
+    <span>カレンダー</span>
+  <% end %>
+
+  <%# 3. 当日のタイムスケジュール %>
+  <%= link_to schedules_show_path(id: Time.zone.today.to_s), class: "nav-item" do %>
+    <i class="fa-solid fa-clock"></i>
+    <span>今日の予定</span>
+  <% end %>
+
+  <%# 4. ユーザー情報画面 %>
+  <%= link_to "#", class: "nav-item" do %>
+    <i class="fa-solid fa-user"></i>
+    <span>ユーザー</span>
+  <% end %>
+</nav>
