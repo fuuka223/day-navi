@@ -4,6 +4,7 @@
   grid-template-columns: 1fr 1fr;
   gap: 12px;
   min-height: 70vh;
+  width: 95vw;
 }
 
 .matrix-box {
@@ -19,12 +20,6 @@
   color: #555;
   opacity: 0.8;
 }
-
-/* 各象限の色設定 */
-.urgent.important { background-color: #ffe5e5; }
-.not-urgent.important { background-color: #fff9e5; }
-.urgent.not-important { background-color: #e5f3ff; }
-.not-urgent.not-important { background-color: #f0f0f0; }
 
 /* タスクカードのデザイン */
 .task-card {
@@ -66,30 +61,35 @@
   position: fixed;
   bottom: 30px;
   right: 20px;
-  
   width: 65px;
   height: 65px;
   border-radius: 50%;
   
   background-color: #e8a7a7;
   color: white;
-  font-size: 36px;
+  font-size: 40px;
   font-weight: 300;
   text-decoration: none;
   
-  display: flex;
+  display: flex !important;
   align-items: center;
   justify-content: center;
-  line-height: 1;
-  padding-bottom: 5px;
+  text-align: center;
+  padding-bottom: 10px;
 
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   z-index: 1000;
   
   transition: transform 0.1s ease;
   -webkit-tap-highlight-color: transparent;
+  
+  margin-bottom: 63px;
 }
 
 .fab:active {
   transform: scale(0.9);
+}
+
+main {
+  padding-bottom: 60px;
 }
