@@ -7,7 +7,7 @@ class Schedule < ApplicationRecord
   validates :end_time,   presence: true
   validate :end_time_after_start_time
   validates :category_color, presence: true, if: -> { category_name.present? }
-  validates :category_name, presence: true, if: -> { category_color.present? }
+  validates :category_name, presence: false, if: -> { category_color.present? }
 
   private
 
