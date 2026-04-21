@@ -13,10 +13,10 @@ document.addEventListener("turbo:load", () => {
     if (!prioritySelect || !indicator) return;
 
     const priorityColors = {
-      "0": "#ff4d4d", // 重要・緊急
-      "1": "#ffb347", // 重要・非緊急
-      "2": "#77dd77", // 非重要・緊急
-      "3": "#f0f0f0"  // 非重要・非緊急
+      "1": "#ff4d4d", // 重要・緊急
+      "2": "#ffb347", // 重要・非緊急
+      "3": "#77dd77", // 非重要・緊急
+      "4": "#f0f0f0"  // 非重要・非緊急
     };
 
     const selectedValue = prioritySelect.value;
