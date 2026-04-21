@@ -1,0 +1,31 @@
+<div class="profile-container">
+  <h2>プロフィール設定</h2>
+
+  <%= form_with(model: @user, local: true) do |f| %>
+    <div class="profile-item">
+      <label>名前</label>
+      <p><%= @user.name %></p>
+    </div>
+
+    <div class="profile-item">
+      <label>メールアドレス</label>
+      <p><%= @user.email %></p>
+    </div>
+
+    <div class="profile-item">
+      <label>パスワード</label>
+      <p>********</p>
+      <%= link_to "パスワード変更はこちら", edit_user_registration_path, class: "edit-link" %>
+    </div>
+
+    <div class="profile-item highlight">
+      <%= f.label :city, "お住まいの市区町村（天気予報用）" %>
+      <%= f.text_field :city, placeholder: "例: 福岡市博多区", class: "form-input" %>
+      <small>※市区町村名のみ入力してください</small>
+    </div>
+
+    <div class="actions">
+      <%= f.submit "保存する", class: "save-button" %>
+    </div>
+  <% end %>
+</div>
