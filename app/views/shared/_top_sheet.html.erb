@@ -1,0 +1,19 @@
+<header class="main-header">
+  <div class="header-container">
+    <%# ロゴ部分 %>
+    <div class="logo-group">
+      <%= link_to root_path, class: "app-logo" do %>
+        Day<span>-</span>Navi
+      <% end %>
+    </div>
+
+    <%# 日付部分 %>
+    <div class="header-info">
+      <div class="current-date">
+        <i class="fa-regular fa-calendar"></i>
+        <%= Time.zone.now.strftime("%Y.%m.%d") %>
+        <span class="day-of-week">(<%= %w(日 月 火 水 木 金 土)[Time.zone.now.wday] %>)</span>
+      </div>
+    </div>
+  </div>
+</header>
