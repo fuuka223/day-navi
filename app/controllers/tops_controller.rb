@@ -1,8 +1,8 @@
 class TopsController < ApplicationController
   def index
-    if user_signed_in? && current_user.city.present?
+    if user_signed_in? && current_user.location.present?
     
-      weather_data = WeatherService.fetch_weather(current_user.city)
+      weather_data = WeatherService.fetch_weather(current_user.location)
       if weather_data && weather_data['list']
         @forecasts = parse_weather(weather_data) 
       end
@@ -49,7 +49,7 @@ class TopsController < ApplicationController
                              .order(:start_time)
 
         # ---3.天気の取得---
-        weather_data = WeatherService.fetch_weather(current_user.city)
+        weather_data = WeatherService.fetch_weather(current_user.location)
         if weather_data && weather_data['list']
           # シンボルキーでハッシュを作成する
           @hourly_forecasts = weather_data['list'].first(8).map do |f|

@@ -6,6 +6,7 @@ class User < ApplicationRecord
 
   has_many :tasks, dependent: :destroy
   has_many :schedules, dependent: :destroy
+  belongs_to :location, optional: true
 
   validates :name, presence: true
 end

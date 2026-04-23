@@ -6,7 +6,9 @@
 </head>
 <body>
     <div class="weather-task-container">
-      <% display_date = @forecasts.key?(Date.today) ? Date.today : @forecasts.keys.first %>
+      <% if @forecasts.present? %>
+        <% display_date = @forecasts.key?(Date.today) ? Date.today : @forecasts.keys.first %>
+      <% end %>
       <% if @forecasts && @forecasts[display_date] %>
         <div class="weather-info-block">
           <p><%= display_date == Date.today ? "今日の天気" : "明日の天気" %></p>
