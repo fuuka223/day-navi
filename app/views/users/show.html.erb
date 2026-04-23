@@ -19,9 +19,8 @@
     </div>
 
     <div class="profile-item highlight">
-      <%= f.label :city, "お住まいの市区町村（天気予報用）" %>
-      <%= f.text_field :city, placeholder: "例: 福岡市博多区", class: "form-input" %>
-      <small>※市区町村名のみ入力してください</small>
+      <%= f.label :location_id, "お住まいの市区町村（天気予報用）" %>
+      <%= f.collection_select :location_id, Location.all, :id, :city, prompt: "お住まいの地域を選択してください" %>
     </div>
 
     <div class="actions">

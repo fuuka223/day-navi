@@ -8,8 +8,8 @@ class SchedulesController < ApplicationController
 
   def calendar
     @schedules = current_user.schedules
-    if current_user.city.present?
-      weather_data = WeatherService.fetch_weather(current_user.city)
+    if current_user.location.present?
+      weather_data = WeatherService.fetch_weather(current_user.location)
       @forecasts = parse_weather(weather_data) if weather_data && weather_data['list']
     end
   end
@@ -56,8 +56,8 @@ class SchedulesController < ApplicationController
       # 今日から3日間以内か判定
       is_within_3_days = @date >= Date.today && @date <= Date.today + 2.days
     
-      if is_within_3_days && current_user.city.present?
-        weather_data = WeatherService.fetch_weather(current_user.city)
+      if is_within_3_days && current_user.location.present?
+        weather_data = WeatherService.fetch_weather(current_user.location)
         # 3時間ごとの予報をハッシュ化して取得
         @hourly_forecasts = parse_hourly_weather(weather_data, @date) if weather_data
       end
@@ -109,8 +109,9 @@ class SchedulesController < ApplicationController
   def parse_weather(data)
   forecasts = {}
   data['list'].each do |f|
-    date = Time.at(f['dt']).to_date
-    next if forecasts[date] && Time.at(f['dt']).hour != 12
+    dt = Time.at(f['dt']).in_time_zone('Tokyo')
+    date = dt.to_date
+    next if forecasts[date] && dt.hour != 12
     forecasts[date] = {
       temp: f['main']['temp'].round,
       description: f['weather'][0]['description'],
