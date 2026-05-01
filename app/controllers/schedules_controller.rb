@@ -3,10 +3,6 @@ class SchedulesController < ApplicationController
   before_action :set_schedule, only: [:edit, :update, :destroy]
 
   def index
-    @today_schedules = current_user.schedules.where(start_time: Time.zone.now.all_day)
-  end
-
-  def calendar
     @schedules = current_user.schedules
     if current_user.location.present?
       weather_data = WeatherService.fetch_weather(current_user.location)
