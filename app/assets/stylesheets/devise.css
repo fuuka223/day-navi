@@ -1,0 +1,107 @@
+/* 背景と中央寄せ */
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  width: 95vw;
+  background-color: #f8f9fa;
+}
+
+/* カードのデザイン */
+.auth-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  width: 100%;
+  max-width: 400px;
+}
+
+.auth-title {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #333;
+  font-weight: bold;
+}
+
+/* 入力フォームのスタイル */
+.auth-field {
+  margin-bottom: 1rem;
+}
+
+.auth-field label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.auth-field input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+/* ボタンのスタイル */
+.btn-submit {
+  width: 100%;
+  padding: 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-submit:hover {
+  background-color: #0056b3;
+}
+
+/* リンク */
+.auth-links {
+  margin-top: 1rem;
+  text-align: center;
+  font-size: 0.85rem;
+}
+
+.auth-links a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+/* 補足テキスト */
+.auth-help-text {
+  font-size: 0.75rem;
+  color: #888;
+  display: inline-block;
+  margin-bottom: 0.2rem;
+}
+
+/* エラーメッセージ */
+#error_explanation {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 1rem;
+  border-radius: 6px;
+  margin-bottom: 1.5rem;
+  font-size: 0.85rem;
+}
+
+#error_explanation ul {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.auth-select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background-color: white;
+  font-size: 0.9rem;
+  color: #333;
+}
