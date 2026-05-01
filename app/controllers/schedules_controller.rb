@@ -19,7 +19,7 @@ class SchedulesController < ApplicationController
     @category_options = Schedule.where.not(category_name: [nil, ""])
                               .select(:category_name, :category_color)
                               .distinct
-    target_date = params[:date] || Date.today.to_s
+    target_date = params[:date] || Time.zone.today.to_s
   
     if params[:start_time] && params[:end_time]
       @schedule.start_time = Time.zone.parse("#{target_date} #{params[:start_time]}")
@@ -54,7 +54,7 @@ class SchedulesController < ApplicationController
       # カテゴリーの選択肢を取得
       set_category_options
       # 今日から3日間以内か判定
-      is_within_3_days = @date >= Date.today && @date <= Date.today + 2.days
+      is_within_3_days = @date >= Time.zone.today && @date <= Time.zone.today + 2.days
     
       if is_within_3_days && current_user.location.present?
         weather_data = WeatherService.fetch_weather(current_user.location)
@@ -107,26 +107,29 @@ class SchedulesController < ApplicationController
   end
 
   def parse_weather(data)
-  forecasts = {}
-  data['list'].each do |f|
-    dt = Time.at(f['dt']).in_time_zone('Tokyo')
-    date = dt.to_date
-    next if forecasts[date] && dt.hour != 12
-    forecasts[date] = {
-      temp: f['main']['temp'].round,
-      description: f['weather'][0]['description'],
-      icon: f['weather'][0]['icon']
-    }
+    forecasts = {}
+    data['list'].each do |f|
+      dt = Time.at(f['dt']).in_time_zone('Tokyo')
+      date = dt.to_date
+      if forecasts[date].nil? || dt.hour != 12
+      forecasts[date] = {
+        temp: f['main']['temp'].round,
+        description: f['weather'][0]['description'],
+        icon: f['weather'][0]['icon']
+      }
+      end
     end
     forecasts
   end
 
   def parse_hourly_weather(data, target_date)
     forecasts = []
-    # APIの3時間おきのデータをループ
-    data['list'].each do |f|
+    target_data = data['list'].select do |f|
+      Time.at(f['dt']).in_time_zone('Tokyo').to_date == target_date
+    end
+    # APIの3時間おきのデータ
+    target_data.each do |f|
       dt = Time.at(f['dt']).in_time_zone('Tokyo')
-      next unless dt.to_date == target_date
       forecasts << {
         start_hour: dt.hour,
         end_hour: dt.hour + 3,

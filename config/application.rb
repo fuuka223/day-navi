@@ -25,14 +25,11 @@ module DayNavi
     # config.eager_load_paths << Rails.root.join("extras")
      
     
-    config.i18n.default_locale = :ja
-    Faker::Config.locale = 'ja'
-  end
-end
-
-module YourAppName
-  class Application < Rails::Application
     config.time_zone = 'Tokyo'
     config.active_record.default_timezone = :local
+
+    config.beginning_of_week = :sunday
+    
+    config.i18n.default_locale = :ja
   end
 end

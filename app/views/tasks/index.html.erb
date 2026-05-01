@@ -17,6 +17,7 @@
         <div class="task-list">
           <%# 優先度と一致するタスクを抽出 %>
           <% @tasks.select { |t| t.priority_level_before_type_cast == (i + 1)}.each do |task| %>
+            <% is_overdue = task.deadline.present? && task.deadline < Time.current && !task.is_completed %>
             <div class="task-card is-clickable" 
                  data-url="<%= task_path(task) %>"
                  data-completed="<%= task.is_completed %>"
@@ -29,12 +30,26 @@
                   <%= task.is_completed ? "✅" : "⬜️" %>
                 <% end %>
                 
-                <%= link_to task.title, task_path(task), class: "task-title" %>
+                <%= link_to task.title, task_path(task), 
+                            class: "task-title #{ 'completed' if task.is_completed } #{ 'overdue' if is_overdue }" %>
               </div>
 
               <% if task.deadline.present? %>
-                <div class="task-deadline">
-                  <small><%= l task.deadline, format: :short %> まで</small>
+                <div class="task-deadline", if is_overdue %>
+                  <% remaining_days = (task.deadline.to_date - Date.current).to_i %>
+
+                  <% if is_overdue %>
+                    <span>⚠️ 期限切れ<br>
+                      　 （<%= remaining_days.abs %>日経過）</span>
+                  <% elsif task.is_completed %>
+                    <span style="color: gray;">期限: <%= l task.deadline, format: :short %></span>
+                  <% elsif remaining_days == 0 %>
+                    <span>🔥 今日が期限です！</span>
+                  <% elsif remaining_days == 1 %>
+                    <span>📢 あと 1 日（明日）</span>
+                  <% else %>
+                    <span>あと <%= remaining_days %> 日</span>
+                  <% end %>
                 </div>
               <% end %>
             </div>

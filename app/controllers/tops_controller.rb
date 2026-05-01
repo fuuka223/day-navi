@@ -4,7 +4,19 @@ class TopsController < ApplicationController
     
       weather_data = WeatherService.fetch_weather(current_user.location)
       if weather_data && weather_data['list']
-        @forecasts = parse_weather(weather_data) 
+        @forecasts = parse_weather(weather_data)
+        today_all_data = weather_data['list'].select do |f|
+          Time.at(f['dt']).in_time_zone('Tokyo').to_date == Time.zone.today
+        end
+        if today_all_data.any?
+          # --- 左上に表示するための集計データ ---
+          @today_summary = {
+            max_temp:   today_all_data.map { |f| f.dig('main', 'temp_max') }.max.round,
+            min_temp:   today_all_data.map { |f| f.dig('main', 'temp_min') }.min.round,
+            max_wind:   today_all_data.map { |f| f.dig('wind', 'speed') }.max.round(1),
+            total_rain: today_all_data.map { |f| f.dig('rain', '3h') || 0 }.sum.round(1)
+          }
+        end
       end
     
 
@@ -18,17 +30,17 @@ class TopsController < ApplicationController
         end
       end
 
-      if response && response['list']
-        forecast_list = response['list']
+      if weather_data && weather_data['list']
+        forecast_list = weather_data['list']
         next_rain = forecast_list.find do |f|
           weather_main = f.dig('weather', 0, 'main')
           weather_main == 'Rain' || weather_main == 'Snow'
         end
         if next_rain
-          @rain_time = Time.zone.parse(next_rain['dt_txt'])
+          @rain_time = Time.at(next_rain['dt']).in_time_zone('Tokyo')
         else
           @rain_time = nil
-          Rails.logger.error "天気予報データの取得に失敗しました: #{response}"
+          Rails.logger.error "天気予報データの取得に失敗しました: #{weather_data}"
         end
       end
 
@@ -43,17 +55,16 @@ class TopsController < ApplicationController
       @schedules = []
       @hourly_forecasts = []  
       if user_signed_in?
-        # ---2.予定の取得---
+        # ---予定の取得---
         @schedules = current_user.schedules
                              .where(start_time: @date.all_day)
                              .order(:start_time)
 
-        # ---3.天気の取得---
-        weather_data = WeatherService.fetch_weather(current_user.location)
+        # ---天気---
         if weather_data && weather_data['list']
           # シンボルキーでハッシュを作成する
           @hourly_forecasts = weather_data['list'].first(8).map do |f|
-            time = Time.zone.parse(f['dt_txt'])
+            time = Time.at(f['dt']).in_time_zone('Tokyo')
             {
               start_hour: time.hour,
               temp: f.dig('main', 'temp').round,
@@ -71,7 +82,7 @@ class TopsController < ApplicationController
 
     forecasts = {}
     data['list'].each do |f|
-      date = Time.at(f['dt']).to_date
+      date = Time.at(f['dt']).in_time_zone('Tokyo').to_date
       next if forecasts[date] && Time.at(f['dt']).hour != 12
 
       forecasts[date] = {
