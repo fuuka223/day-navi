@@ -4,6 +4,7 @@
   border-collapse: collapse !important;
   table-layout: fixed !important; /* 幅を1/7に固定 */
   background-color: white;
+  margin-bottom: 55px;
 }
 .simple-calendar td {
   max-width: 0;
@@ -130,5 +131,4 @@
 .weather-icon {
   width: 35px;
   height: 35px;
-  opacity: 0.5;
 }
