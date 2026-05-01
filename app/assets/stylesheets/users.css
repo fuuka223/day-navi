@@ -1,5 +1,5 @@
 .profile-container {
-  max-width: 500px;
+  width: 95vw;
   margin: 20px auto;
   padding: 20px;
   background: #fff;
@@ -43,4 +43,52 @@
   border-radius: 25px;
   font-weight: bold;
   cursor: pointer;
+  margin-bottom: 20px;
+}
+
+/* ログアウトボタンのスタイル */
+.btn-logout {
+  width: 100%;
+  padding: 12px;
+  background-color: #f8f9fa;
+  color: #495057;
+  border: 1px solid #ced4da;
+  border-radius: 25px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.btn-logout:hover {
+  background-color: #e2e6ea;
+  border-color: #adb5bd;
+}
+
+/* 区切り線 */
+.separator {
+  margin: 20px 0;
+  border: 0;
+  border-top: 1px solid #eee;
+}
+
+/* 削除ボタンエリア（少し余白をあける） */
+.danger-zone {
+  margin-top: 10px;
+}
+
+/* アカウント削除 */
+.btn-danger {
+  width: 100%;
+  padding: 12px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+
+.btn:hover {
+  opacity: 0.8;
 }
