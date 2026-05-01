@@ -1,7 +1,6 @@
 <div class="calendar-container">
   <div class="calendar-header">
     <h1>予定カレンダー</h1>
-    <%= link_to '予定を追加', new_schedule_path, class: "btn-new" %>
   </div>
 
   <%= month_calendar(events: @schedules) do |date, schedules| %>
@@ -27,4 +26,6 @@
       </div>
     <% end %>
   <% end %>
+
+  <%= link_to "+", new_schedule_path, class: "fab" %>
 </div>
