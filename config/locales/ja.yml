@@ -55,3 +55,12 @@ ja:
     errors:
       messages:
         required: を入力してください
+
+  devise:
+    registrations:
+      destroyed: "アカウントを削除しました"
+    sessions:
+      signed_in: "ログインしました"
+      signed_out: "ログアウトしました"
+    failure:
+      unauthenticated: "ログインしてください"
