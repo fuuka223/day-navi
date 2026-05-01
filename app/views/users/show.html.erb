@@ -26,5 +26,35 @@
     <div class="actions">
       <%= f.submit "保存する", class: "save-button" %>
     </div>
+
   <% end %>
+</div>
+
+<div class="profile-container">
+  <h2 class="section-title">アカウント管理</h3>
+
+    <%# ログアウトボタン %>
+    <div class="action-item">
+      <%= button_to "ログアウト", destroy_user_session_path, 
+                  method: :delete, 
+                  class: "btn-logout",
+                  form: {
+                    data: {
+                      turbo: false,
+                      turbo_preload: false
+                    }
+                  } %>
+    </div>
+
+    <hr class="separator">
+
+    <%# アカウント削除ボタン %>
+    <%= button_to "アカウント削除", user_registration_path, 
+            method: :delete, 
+            data: {
+              turbo_confirm: "本当にアカウントを削除しますか？この操作は戻せません。",
+              turbo: true
+            },
+            class: "btn-danger" %>
+    </div>
 </div>
