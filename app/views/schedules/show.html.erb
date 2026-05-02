@@ -2,7 +2,7 @@
   <div class="detail-header">
     <div class="header-left">
       <small class="calendar-year"><%= @date.year %>年</small>
-      <strong class="calendar-month"><%= @date.month %>月<%= @date.day %>日</strong>
+      <strong class="calendar-month"><%= l(@date, format: :short_with_weekday) %></strong>
     </div>
     <%= link_to 'カレンダーに戻る', schedules_path(start_date: @date), class: "btn-back" %>
   </div>

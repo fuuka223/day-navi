@@ -56,20 +56,6 @@
     </div>
   </div>
 
-  <%# <script>
-    // カテゴリー名が選択されたら、紐付いている色を自動反映させる
-    document.getElementById('category-input').addEventListener('input', function(e) {
-      const list = document.getElementById('category-list');
-      const options = list.options;
-      for (let i = 0; i < options.length; i++) {
-        if (options[i].value === e.target.value) {
-          document.getElementById('color-input').value = options[i].getAttribute('data-color');
-          break;
-        }
-      }
-    });
-  </script> %>
-
   <div class="form-actions">
     <%= f.submit yield(:button_text), class: "btn-submit" %>
     <%= link_to 'キャンセル', :back, class: "btn-cancel" %>
