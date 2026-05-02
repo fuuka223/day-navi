@@ -4,7 +4,7 @@
       <small class="calendar-year"><%= @date.year %>年</small>
       <strong class="calendar-month"><%= @date.month %>月<%= @date.day %>日</strong>
     </div>
-    <%= link_to 'カレンダーに戻る', schedules_path, class: "btn-back" %>
+    <%= link_to 'カレンダーに戻る', schedules_path(start_date: @date), class: "btn-back" %>
   </div>
 
   <div class="timeline-grid" id="timeline" data-date="<%= @date.to_s %>" onclick="createNewSchedule(event)">
