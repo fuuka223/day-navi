@@ -7,6 +7,70 @@
   width: 95vw;
 }
 
+.detail-header {
+  text-align: center;
+  padding: 20px 0;
+  background-color: #fff;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+/* 日付と前日翌日ボタンの並び */
+.date-navigation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  margin-bottom: 15px;
+}
+
+.calendar-date {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: lightblue;
+}
+
+/* 前日翌日ボタン */
+.nav-btn {
+  text-decoration: none;
+  color: #666;
+  font-size: 80%;
+  padding: 8px 12px;
+  border-radius: 20px;
+  background-color: #f8f9fa;
+  transition: all 0.2s;
+}
+
+.nav-btn:hover {
+  background-color: #e9ecef;
+  color: #000;
+}
+
+/* カレンダーに戻るボタン */
+.back-to-calendar {
+  display: inline-block;
+  text-decoration: none;
+  color: #555;
+  font-size: 0.85rem;
+  padding: 6px 16px;
+  margin: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: all 0.3s;
+}
+
+.back-to-calendar:hover {
+  background-color: #f0f0f0;
+  border-color: #999;
+}
+
+.back-to-calendar i, .nav-btn i {
+  margin: 0 4;
+}
+
+
 .timeline-grid {
   position: relative;
   background: #fff;

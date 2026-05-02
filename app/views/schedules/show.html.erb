@@ -1,10 +1,18 @@
 <div class="schedule-detail-container">
   <div class="detail-header">
-    <div class="header-left">
-      <small class="calendar-year"><%= @date.year %>年</small>
-      <strong class="calendar-month"><%= l(@date, format: :short_with_weekday) %></strong>
-    </div>
-    <%= link_to 'カレンダーに戻る', schedules_path(start_date: @date), class: "btn-back" %>
+    <%# 前日ボタン %>
+    <%= link_to schedule_path(id: (@date - 1.day).to_s), class: "nav-btn" do %>
+      <i class="fas fa-chevron-left"></i> 前日
+    <% end %>
+    <%# 当日の日付表示 %>
+    <small class="calendar-year"><%= @date.year %>年</small>
+    <strong class="calendar-date"><%= l(@date, format: :short_with_weekday) %></strong>
+    <%# 翌日ボタン %>
+    <%= link_to schedule_path(id: (@date + 1.day).to_s), class: "nav-btn" do %>
+      翌日 <i class="fas fa-chevron-right"></i>
+    <% end %><br>
+    <%# 戻るボタン %>
+    <%= link_to 'カレンダーに戻る', schedules_path(start_date: @date), class: "back-to-calendar" %>
   </div>
 
   <div class="timeline-grid" id="timeline" data-date="<%= @date.to_s %>" onclick="createNewSchedule(event)">
