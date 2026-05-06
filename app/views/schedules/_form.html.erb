@@ -11,12 +11,16 @@
 
   <div class="form-group">
     <%= f.label :title, "タイトル", class: "form-label" %>
-    <%= f.text_field :title, class: "form-input", placeholder: "予定のタイトルを入力" %>
+    <%= f.text_field :title, class: "form-input", placeholder: "何をしますか？（50文字以内）" %>
+    <%# タイトル用の文字数表示 %>
+    <span class="char-count"></span>
   </div>
 
   <div class="form-group">
     <%= f.label :content, "メモ", class: "form-label" %>
-    <%= f.text_area :content, class: "form-textarea", placeholder: "詳細なメモを入力（任意）", rows: 4 %>
+    <%= f.text_area :content, class: "form-textarea", placeholder: "詳細なメモなど（1000文字以内）", rows: 4 %>
+    <%# メモ用の文字数表示 %>
+    <span class="char-count"></span>
   </div>
 
   <div class="form-group">

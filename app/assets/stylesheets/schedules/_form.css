@@ -172,3 +172,20 @@
   color: #d63031;
   font-size: 0.85rem;
 }
+
+.char-count {
+  font-size: 0.8rem;
+  color: #666;
+  display: block;
+  text-align: right;
+}
+
+.char-count.is-error {
+  color: #ff4d4f !important;
+  font-weight: bold;
+}
+
+.form-input.is-invalid, .form-textarea.is-invalid {
+  border-color: #ff4d4f;
+  background-color: #fff2f0;
+}
