@@ -9,7 +9,6 @@ class Task < ApplicationRecord
   }
 
   validates :title, presence: true, length: { maximum: 50 }
-  validates :content, presence: true, length: { maximum: 1000 }
+  validates :content, length: { maximum: 1000 }, allow_blank: true
   validates :priority_level, presence: true
-  validates :is_completed, inclusion: {in: [true, false]}
 end

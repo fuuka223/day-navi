@@ -3,9 +3,25 @@ ja:
     attributes:
       user:
         name: "名前"
+        email: メールアドレス
+        password: パスワード
+        password_confirmation: パスワード（確認用）
         location_id: "地域"
+      task:
+        title: "タイトル"
+        content: "内容"
+        priority_level: "優先度"
+        is_completed: "完了ステータス"
+        deadline: "期限"
+        user: "ユーザー"
     errors:
-      format: "%{attribute}%{message}"
+      format:
+        title: "タイトル"
+        content: "内容"
+        priority_level: "優先度"
+        is_completed: "完了ステータス"
+        deadline: "期限"
+        user: "ユーザー"
       models:
         task:
           format: "%{attribute}%{message}"
@@ -49,18 +65,6 @@ ja:
       user: ユーザー
       schedule: 予定
     attributes:
-      task:
-        title: タイトル
-        content: 内容
-        priority_level: 優先度
-        is_completed: 完了ステータス
-        deadline: 期限
-        user: ユーザー
-      user:
-        nickname: ニックネーム
-        email: メールアドレス
-        password: パスワード
-        password_confirmation: パスワード（確認用）
       schedule:
         title: タイトル
         content: 内容

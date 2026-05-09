@@ -11,8 +11,16 @@ RSpec.describe Task, type: :model do
       it 'すべての値が正しく入力されていれば登録できる' do
         expect(@task).to be_valid
       end
+      it 'contentが空でも登録できる' do
+        @task.content = ''
+        expect(@task).to be_valid
+      end
       it 'deadlineが空でも登録できる' do
         @task.deadline = nil
+        expect(@task).to be_valid
+      end
+      it 'is_completedが空（nil）でも登録できる' do
+        @task.is_completed = nil
         expect(@task).to be_valid
       end
     end
@@ -31,11 +39,6 @@ RSpec.describe Task, type: :model do
       end
 
       # ---content関連---
-      it 'contentが空では登録できない' do
-        @task.content = ''
-        @task.valid?
-        expect(@task.errors.full_messages).to include("内容を入力してください")
-      end
       it 'contentが1001文字以上では登録できない' do
         @task.content = 'a' * 1001
         @task.valid?
@@ -49,18 +52,9 @@ RSpec.describe Task, type: :model do
         expect(@task.errors.full_messages).to include("優先度を入力してください")
       end
       it 'priority_levelが1〜4以外では登録できない' do
-        [0, 5].each do |level|
-          @task.priority_level = level
-          @task.valid?
-          expect(@task.errors.full_messages).to include("優先度は一覧にありません")
-        end
-      end
-
-      # ---is_completed関連 ---
-      it 'is_completedが空では登録できない' do
-        @task.is_completed = nil
-        @task.valid?
-        expect(@task.errors.full_messages).to include("完了ステータスは一覧にありません")
+        expect {
+          @task.priority_level = 5
+        }.to raise_error(ArgumentError)
       end
 
       # ---ユーザー関連---
