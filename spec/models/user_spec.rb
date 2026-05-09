@@ -8,7 +8,7 @@ RSpec.describe User, type: :model do
     end
 
     context '新規登録できるとき' do
-      it 'nickname, email, password, password_confirmationが存在すれば登録できる' do
+      it 'name, email, password, password_confirmation, location_idが存在すれば登録できる' do
         expect(@user).to be_valid
       end
     end
@@ -19,6 +19,12 @@ RSpec.describe User, type: :model do
         @user.name = ''
         @user.valid?
         expect(@user.errors.full_messages).to include("名前を入力してください")
+      end
+
+      it 'nameが21文字以上では登録できない' do
+        @user.name = 'a' * 21
+        @user.valid?
+        expect(@user.errors.full_messages).to include("名前は20文字以内で入力してください")
       end
 
       # ---email関連---
@@ -68,6 +74,25 @@ RSpec.describe User, type: :model do
         @user.password_confirmation = '1234567'
         @user.valid?
         expect(@user.errors.full_messages).to include("パスワード（確認用）とパスワードの入力が一致しません")
+      end
+
+      # ---location_id関連---
+      it 'location_idが未選択（0など）では登録できない' do
+        @user.location_id = 0
+        @user.valid?
+        expect(@user.errors.full_messages).to include("地域を選択してください")
+      end
+
+      it 'location_idが空では登録できない' do
+        @user.location_id = nil
+        @user.valid?
+        expect(@user.errors.full_messages).to include("地域を選択してください")
+      end
+
+      it '選択肢にないID（64以上）では登録できない' do
+        @user.location_id = 64
+        @user.valid?
+        expect(@user.errors.full_messages).to include("地域を選択してください")
       end
     end
   end

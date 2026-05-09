@@ -1,4 +1,24 @@
 ja:
+  activerecord:
+    attributes:
+      user:
+        name: "名前"
+        location_id: "地域"
+    errors:
+      format: "%{attribute}%{message}"
+      models:
+        task:
+          format: "%{attribute}%{message}"
+        user:
+          format: "%{attribute}%{message}"
+          attributes:
+            name:
+              too_long: "は20文字以内で入力してください"
+            location_id:
+              blank: "を選択してください" 
+              not_a_number: "を選択してください"
+              greater_than_or_equal_to: "を選択してください"
+              less_than_or_equal_to: "を選択してください"
   time:
     formats:
       default: "%Y/%m/%d %H:%M:%S"
@@ -24,14 +44,6 @@ ja:
       invalid: は不正な値です
       confirmation: と%{attribute}の入力が一致しません
 
-  activerecord:
-    errors:
-      format: "%{attribute}%{message}"
-      models:
-        task:
-          format: "%{attribute}%{message}"
-        user:
-          format: "%{attribute}%{message}"
     models:
       task: タスク
       user: ユーザー

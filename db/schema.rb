@@ -66,5 +66,4 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_21_074102) do
 
   add_foreign_key "schedules", "users"
   add_foreign_key "tasks", "users"
-  add_foreign_key "users", "locations"
 end

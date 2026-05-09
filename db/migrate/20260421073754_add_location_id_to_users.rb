@@ -1,5 +1,5 @@
 class AddLocationIdToUsers < ActiveRecord::Migration[7.1]
   def change
-    add_reference :users, :location, null: true, foreign_key: true
+    add_column :users, :location, :integer, null: true
   end
 end
