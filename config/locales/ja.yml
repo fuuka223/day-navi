@@ -1,4 +1,46 @@
 ja:
+  activerecord:
+    attributes:
+      user:
+        name: "名前"
+        email: メールアドレス
+        password: パスワード
+        password_confirmation: パスワード（確認用）
+        location_id: "地域"
+      task:
+        title: "タイトル"
+        content: "内容"
+        priority_level: "優先度"
+        is_completed: "完了ステータス"
+        deadline: "期限"
+        user: "ユーザー"
+      schedule:
+        title: "タイトル"
+        content: "内容"
+        start_time: "開始時間"
+        end_time: "終了時間"
+        user: "ユーザー"
+    errors:
+      format:
+        title: "タイトル"
+        content: "内容"
+        priority_level: "優先度"
+        is_completed: "完了ステータス"
+        deadline: "期限"
+        user: "ユーザー"
+      models:
+        task:
+          format: "%{attribute}%{message}"
+        user:
+          format: "%{attribute}%{message}"
+          attributes:
+            name:
+              too_long: "は20文字以内で入力してください"
+            location_id:
+              blank: "を選択してください" 
+              not_a_number: "を選択してください"
+              greater_than_or_equal_to: "を選択してください"
+              less_than_or_equal_to: "を選択してください"
   time:
     formats:
       default: "%Y/%m/%d %H:%M:%S"
@@ -24,40 +66,11 @@ ja:
       invalid: は不正な値です
       confirmation: と%{attribute}の入力が一致しません
 
-  activerecord:
-    errors:
-      format: "%{attribute}%{message}"
-      models:
-        task:
-          format: "%{attribute}%{message}"
-        user:
-          format: "%{attribute}%{message}"
     models:
       task: タスク
       user: ユーザー
       schedule: 予定
-    attributes:
-      task:
-        title: タイトル
-        content: 内容
-        priority_level: 優先度
-        is_completed: 完了ステータス
-        deadline: 期限
-        user: ユーザー
-      user:
-        nickname: ニックネーム
-        email: メールアドレス
-        password: パスワード
-        password_confirmation: パスワード（確認用）
-      schedule:
-        title: タイトル
-        content: 内容
-        start_time: 開始時間
-        end_time: 終了時間
-        user: ユーザー
-    errors:
-      messages:
-        required: を入力してください
+
 
   devise:
     registrations:

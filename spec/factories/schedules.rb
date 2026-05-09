@@ -1,9 +1,11 @@
 FactoryBot.define do
   factory :schedule do
-    title      { Faker::Lorem.sentence }
-    content    { Faker::Lorem.paragraph }
-    start_time { Faker::Time.between(from: DateTime.now, to: DateTime.now + 1.day) }
-    end_time   { start_time + 1.hour }
+    title { "テスト予定" }
+    content { "テスト内容" }
+    start_time { Time.zone.now.tomorrow.change(hour: 10) }
+    end_time { Time.zone.now.tomorrow.change(hour: 11) }
+    category_name { "勉強" }
+    category_color { "#0000ff" }
     association :user
   end
 end
