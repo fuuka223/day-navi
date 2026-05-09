@@ -14,6 +14,12 @@ ja:
         is_completed: "完了ステータス"
         deadline: "期限"
         user: "ユーザー"
+      schedule:
+        title: "タイトル"
+        content: "内容"
+        start_time: "開始時間"
+        end_time: "終了時間"
+        user: "ユーザー"
     errors:
       format:
         title: "タイトル"
@@ -64,16 +70,7 @@ ja:
       task: タスク
       user: ユーザー
       schedule: 予定
-    attributes:
-      schedule:
-        title: タイトル
-        content: 内容
-        start_time: 開始時間
-        end_time: 終了時間
-        user: ユーザー
-    errors:
-      messages:
-        required: を入力してください
+
 
   devise:
     registrations:
