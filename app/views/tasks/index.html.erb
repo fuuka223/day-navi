@@ -25,7 +25,8 @@
               
               <div class="task-card-header">
                 <%= button_to toggle_status_task_path(task), 
-                            method: :patch, 
+                            method: :patch,
+                            form: { class: "status-form" },
                             class: "status-btn js-toggle" do %>
                   <%= task.is_completed ? "✅" : "⬜️" %>
                 <% end %>
