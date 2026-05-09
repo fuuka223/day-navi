@@ -98,19 +98,19 @@ const setupTimePicker = () => {
 };
 
 
-    const targetElement = document.getElementById('category-input');
-    if (targetElement){
-      targetElement.addEventListener('input', function(e) {
-        const list = document.getElementById('category-list');
-        const options = list.options;
-        for (let i = 0; i < options.length; i++) {
-          if (options[i].value === e.target.value) {
-            document.getElementById('color-input').value = options[i].getAttribute('data-color');
-            break;
-          }
-        }
-      });
+const targetElement = document.getElementById('category-input');
+if (targetElement){
+  targetElement.addEventListener('input', function(e) {
+    const list = document.getElementById('category-list');
+    const options = list.options;
+    for (let i = 0; i < options.length; i++) {
+      if (options[i].value === e.target.value) {
+        document.getElementById('color-input').value = options[i].getAttribute('data-color');
+        break;
+      }
     }
+  });
+}
 
 
 

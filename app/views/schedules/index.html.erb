@@ -1,2 +1,31 @@
-<h1>Schedules#index</h1>
-<p>Find me in app/views/schedules/index.html.erb</p>
+<div class="calendar-container">
+  <div class="calendar-header">
+    <h1>予定カレンダー</h1>
+  </div>
+
+  <%= month_calendar(events: @schedules) do |date, schedules| %>
+    <%= link_to schedule_path(id: date.to_s), class: "calendar-day-link" do %>
+      <div class="calendar-day-number">
+        <%= date.day %>
+      </div>
+      <% if @forecasts && @forecasts[date] %>
+        <div class="weather-overlay" title="<%= @forecasts[date][:description] %>">
+          <%= image_tag "https://openweathermap.org/img/wn/#{@forecasts[date][:icon]}@2x.png", 
+                        alt: @forecasts[date][:description],
+                        class: "weather-icon" %>
+        </div>
+      <% end %>
+      <div class="calendar-events-container">
+        <% schedules.each do |schedule| %>
+          <%# カテゴリーカラーがあれば背景に適用、なければデフォルトクラスを付与 %>
+          <div class="calendar-event-link <%= 'default-color' if schedule.category_color.blank? %>" 
+             style="<%= "background-color: #{schedule.category_color};" if schedule.category_color.present? %>">
+          <%= schedule.title %>
+        </div>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+
+  <%= link_to "+", new_schedule_path, class: "fab" %>
+</div>
