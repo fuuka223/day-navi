@@ -44,8 +44,8 @@
       <div class="top-task-matrix">
         <% matrix_definition.each_with_index do |panel, i| %>
           <% target_level = i + 1 %>
-          <% count = @task_counts_by_index[target_level] || 0 %>
-          <div class="matrix-panel <%= panel[:css] %> <%= 'has-tasks' if count > 0 %>">
+          <% count = @task_counts_by_index&.[] (target_level) || 0 %>
+          <div class="matrix-panel <%= panel[:css] %> <%= 'has-tasks' if count.to_i > 0 %>">
             <span class="panel-label"><%= panel[:label].split('・').last %></span>
             <span class="panel-count"><%= count %></span>
           </div>
@@ -124,17 +124,21 @@
         </div>
         <%# 4. 予定の帯 %>
         <div class="schedule-overlay">
-          <% @schedules.each do |schedule| %>
-            <% top_pos = schedule.start_time.hour * 60 + schedule.start_time.min %>
-            <% height = (schedule.end_time - schedule.start_time) / 60 %>
+          <% if @schedules.present? %>
+            <% @schedules.each do |schedule| %>
+              <% top_pos = schedule.start_time.hour * 60 + schedule.start_time.min %>
+              <% height = (schedule.end_time - schedule.start_time) / 60 %>
         
-            <div class="schedule-block" 
-                style="top: <%= top_pos %>px; height: <%= height %>px; <%= "background: #{schedule.category_color};" if schedule.category_color.present? %>"
-                onclick="showDetail('<%= j schedule.title %>', '<%= schedule.start_time.strftime('%H:%M') %> - <%= schedule.end_time.strftime('%H:%M') %>', '<%= j schedule.content %>', '<%= j schedule.category_name %>', '<%= schedule.category_color %>', event)">
-              <div class="schedule-title">
-                <%= schedule.title %>
+              <div class="schedule-block" 
+                  style="top: <%= top_pos %>px; height: <%= height %>px; <%= "background: #{schedule.category_color};" if schedule.category_color.present? %>"
+                  onclick="showDetail('<%= j schedule.title %>', '<%= schedule.start_time.strftime('%H:%M') %> - <%= schedule.end_time.strftime('%H:%M') %>', '<%= j schedule.content %>', '<%= j schedule.category_name %>', '<%= schedule.category_color %>', event)">
+                <div class="schedule-title">
+                  <%= schedule.title %>
+                </div>
               </div>
-            </div>
+            <% end %>
+          <% else %>
+            <p>予定はありません</p>
           <% end %>
         </div>
       </div>

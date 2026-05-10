@@ -1,6 +1,7 @@
 class SchedulesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_schedule, only: [:edit, :update, :destroy]
+  before_action :move_to_index, only: [:edit, :update, :destroy]
 
   def index
     @schedules = current_user.schedules
@@ -73,7 +74,7 @@ class SchedulesController < ApplicationController
       redirect_to schedule_path(@schedule.start_time.to_date.to_s)
     else
       set_category_options
-      render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_content
     end
   end
 
@@ -99,7 +100,13 @@ class SchedulesController < ApplicationController
   end
 
   def set_schedule
-    @schedule = current_user.schedules.find(params[:id])
+    @schedule = Schedule.find(params[:id])
+  end
+
+  def move_to_index
+    if @schedule.user_id != current_user.id
+      redirect_to root_path
+    end
   end
 
   def parse_weather(data)
